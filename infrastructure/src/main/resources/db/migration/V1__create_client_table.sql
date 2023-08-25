@@ -1,0 +1,9 @@
+CREATE TABLE client (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    document VARCHAR(18) NOT NULL,
+    born_date DATE,
+    email VARCHAR(100),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

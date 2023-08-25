@@ -1,0 +1,8 @@
+CREATE TABLE account (
+    id SERIAL PRIMARY KEY,
+    number VARCHAR(20) NOT NULL,
+    balance DECIMAL(15, 2) NOT NULL,
+    client_id INT REFERENCES client(id),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
