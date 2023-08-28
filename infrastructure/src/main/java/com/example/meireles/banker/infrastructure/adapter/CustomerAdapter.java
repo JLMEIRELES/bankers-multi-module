@@ -16,6 +16,9 @@ public class CustomerAdapter implements CustomerProvider {
 
     private final CustomerMapper customerMapper;
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Customer addCustomer(Customer customer) {
         CustomerEntity customerEntity = customerRepository.

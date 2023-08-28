@@ -12,6 +12,9 @@ public class CustomerServiceImpl implements CustomerService {
     @Autowired
     private CustomerProvider customerProvider;
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Customer addCustomer(Customer customer) {
         return customerProvider.addCustomer(customer);

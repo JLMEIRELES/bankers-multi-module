@@ -5,6 +5,7 @@ import com.example.meireles.banker.application.dto.response.CustomerResponse;
 import com.example.meireles.banker.application.mapper.CustomerDtoMapper;
 import com.example.meireles.banker.domain.service.CustomerService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,9 +18,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;
 
+/**
+ * Class rest controller to manage {@link CustomerController} endpoints
+ */
 @RestController
 @RequestMapping(value = "${customer.controller}", produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
+@Tag(name = "Customer Controller", description = "Customer management API")
 public class CustomerController {
 
     @Value("${customer.controller}")
@@ -29,8 +34,14 @@ public class CustomerController {
 
     private final CustomerService customerService;
 
+    /**
+     * Creates a new customer
+     *
+     * @param customerRequest an instance of {@link CustomerRequest} content information about the customer to be created
+     * @return an instance of {@link CustomerResponse} content the id of the created customer
+     */
     @PostMapping
-    @Operation(summary = "Create a new customer")
+    @Operation(summary = "Create a new customer", description = "Create a juridic or physical person")
     public ResponseEntity<CustomerResponse> addCustomer(@Valid @RequestBody CustomerRequest customerRequest) {
         var customer = customerDtoMapper.toCustomer(customerRequest);
         var addedCustomer = customerService.addCustomer(customer);

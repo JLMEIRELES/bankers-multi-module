@@ -29,13 +29,12 @@ public class CustomerRequest {
     private String name;
 
     @NotNull(message = "date cannot be null")
-    @Schema(description =  "Customer born date", pattern = "dd/MM/yyyy", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Customer born date", pattern = "dd/MM/yyyy", requiredMode = Schema.RequiredMode.REQUIRED)
     @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate bornDate;
 
     @NotNull(message = "email cannot be null")
-    @Schema(description = "Customer email", pattern = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\\\.[A-Za-z0-9_-]+)*@\"\n" +
-            "            + \"[^-][A-Za-z0-9-]+(\\\\.[A-Za-z0-9-]+)*(\\\\.[A-Za-z]{2,})$", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Customer email", example = "usuario@domain.com", requiredMode = Schema.RequiredMode.REQUIRED)
     @Email(message = "Email is not valid", regexp = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@"
             + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$")
     private String email;

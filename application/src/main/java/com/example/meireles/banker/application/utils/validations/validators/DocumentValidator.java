@@ -9,6 +9,9 @@ import org.hibernate.validator.internal.constraintvalidators.hv.br.CNPJValidator
 import org.hibernate.validator.internal.constraintvalidators.hv.br.CPFValidator;
 
 
+/**
+ * Validator that validate documents
+ */
 @RequiredArgsConstructor
 public class DocumentValidator implements ConstraintValidator<Document, String> {
 
@@ -16,6 +19,13 @@ public class DocumentValidator implements ConstraintValidator<Document, String> 
 
     private final CNPJValidator cnpjValidator;
 
+    /**
+     * method that validate a CPF or CNPJ
+     *
+     * @param document the document
+     * @param context an instance of {@link ConstraintValidatorContext}
+     * @return a boolean that says if the document is valid or not
+     */
     @Override
     public boolean isValid(String document, ConstraintValidatorContext context) {
         if (document == null){

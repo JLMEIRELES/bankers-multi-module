@@ -13,10 +13,20 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Handle class to intercept all exceptions and create a standard error message
+ */
 @RestControllerAdvice
 @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 public class ExceptionHandlerAdvice {
 
+    /**
+     * Creates a standard object of {@link MethodArgumentNotValidException}. This error occurs
+     * when a request have an invalid field
+     *
+     * @param ex the exception
+     * @return the @{@link ResponseEntity} content the error
+     */
     @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> handleJakartaExceptions(MethodArgumentNotValidException ex){
@@ -27,6 +37,13 @@ public class ExceptionHandlerAdvice {
         return ResponseEntity.unprocessableEntity().body(new ErrorResponse(HttpStatus.UNPROCESSABLE_ENTITY, errors));
     }
 
+    /**
+     * Creates a standard object of {@link DataIntegrityViolationException}. This error occurs
+     * when the request could not be processed for the database
+     *
+     * @param ex the exception
+     * @return the @{@link ResponseEntity} content the error
+     */
     @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY)
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<ErrorResponse> handleDataBaseExceptions(DataIntegrityViolationException ex){

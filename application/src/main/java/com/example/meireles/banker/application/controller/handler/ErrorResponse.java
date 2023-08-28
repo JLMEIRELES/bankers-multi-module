@@ -11,6 +11,9 @@ import org.springframework.http.HttpStatus;
 import java.time.LocalDateTime;
 import java.util.Map;
 
+/**
+ * Class that generates the return body of web exceptions.
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -27,12 +30,24 @@ public class ErrorResponse {
 
     private String message;
 
+    /**
+     * Constructor content Status and errors fields, for jakarta validations
+     *
+     * @param status the http status
+     * @param errorsField a collection of the errors and its fields
+     */
     public ErrorResponse(HttpStatus status, Map<String, String> errorsField) {
         this.errorsFields = errorsField;
         this.status = status.value();
         this.timestamp = LocalDateTime.now();
     }
 
+    /**
+     * Constructor content status and error message
+     *
+     * @param status the http status
+     * @param message the error message
+     */
     public ErrorResponse(HttpStatus status, String message) {
         this.message = message;
         this.status = status.value();
