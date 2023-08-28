@@ -3,6 +3,7 @@ package com.example.meireles.banker.application.dto.request;
 import com.example.meireles.banker.application.utils.validations.annotation.Document;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -33,7 +34,10 @@ public class CustomerRequest {
     private LocalDate bornDate;
 
     @NotNull(message = "email cannot be null")
-    @Schema(description = "Customer email", pattern = "", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Customer email", pattern = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\\\.[A-Za-z0-9_-]+)*@\"\n" +
+            "            + \"[^-][A-Za-z0-9-]+(\\\\.[A-Za-z0-9-]+)*(\\\\.[A-Za-z]{2,})$", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Email(message = "Email is not valid", regexp = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@"
+            + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$")
     private String email;
 
 }
