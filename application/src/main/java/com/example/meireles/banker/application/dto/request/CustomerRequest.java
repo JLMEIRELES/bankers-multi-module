@@ -1,5 +1,6 @@
 package com.example.meireles.banker.application.dto.request;
 
+import com.example.meireles.banker.application.utils.validations.annotation.Document;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
@@ -17,20 +18,21 @@ import java.time.LocalDate;
 @Schema(description = "An object of customer request")
 public class CustomerRequest {
 
-    @NotNull
+    @NotNull(message = "document cannot be null")
     @Schema(description = "CPF/CNPJ of customer", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Document
     private String document;
 
-    @NotNull
+    @NotNull(message = "name cannot be null")
     @Schema(description = "Customer name", requiredMode = Schema.RequiredMode.REQUIRED)
     private String name;
 
-    @NotNull
+    @NotNull(message = "date cannot be null")
     @Schema(description =  "Customer born date", pattern = "dd/MM/yyyy", requiredMode = Schema.RequiredMode.REQUIRED)
     @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate bornDate;
 
-    @NotNull
+    @NotNull(message = "email cannot be null")
     @Schema(description = "Customer email", pattern = "", requiredMode = Schema.RequiredMode.REQUIRED)
     private String email;
 
