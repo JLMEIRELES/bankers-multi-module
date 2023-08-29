@@ -29,12 +29,25 @@ public abstract class BaseAPITest {
 
     protected final ObjectMapper objectMapper;
 
+    /**
+     * Map a json to an object
+     *
+     * @param jsonPath the path of the json to be mapped
+     * @param object the target class
+     * @return the mapped object
+     * @param <T> generics
+     * @throws IOException if there's an error on json parse
+     */
     protected <T> T toEntity(String jsonPath, Class<T> object) throws IOException {
         File file = new File(jsonPath);
         return objectMapper.readValue(file, object);
     }
 
-
+    /**
+     * Get the path of requisition
+     *
+     * @return the path of the requisition to be done
+     */
     protected String getPath() {
         return String.format(basePath, port);
     }
