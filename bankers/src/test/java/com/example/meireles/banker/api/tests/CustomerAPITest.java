@@ -1,5 +1,6 @@
 package com.example.meireles.banker.api.tests;
 
+import com.example.meireles.banker.application.controller.handler.ErrorResponse;
 import com.example.meireles.banker.application.dto.request.CustomerRequest;
 import com.example.meireles.banker.application.dto.response.CustomerResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -32,6 +33,11 @@ class CustomerAPITest extends BaseAPITest {
         basePath = "http://localhost:%d/v1/customer";
     }
 
+    /**
+     * Checks if the customer will be created
+     *
+     * @throws IOException if there's an error on json parse
+     */
     @Test
     void shouldCreateCustomer() throws IOException {
         CustomerRequest customerRequest =
@@ -44,6 +50,52 @@ class CustomerAPITest extends BaseAPITest {
                 () -> Assertions.assertNotNull(response),
                 () -> Assertions.assertEquals(HttpStatus.CREATED, response.getStatusCode()),
                 () -> Assertions.assertEquals(1L, Objects.requireNonNull(response.getBody()).getId())
+        );
+    }
+
+    /**
+     * Checks if email and document are been correctly validated
+     *
+     * @throws IOException if there's an error on json parse
+     */
+    @Test
+    void shouldNotCreateCustomer() throws IOException {
+        CustomerRequest customerRequest = toEntity(jsonPath + "invalid-customer.json", CustomerRequest.class);
+
+        var response = restTemplate.
+                postForEntity(getPath(), customerRequest, ErrorResponse.class);
+
+        Assertions.assertAll(
+                () -> Assertions.assertNotNull(response),
+                () -> Assertions.assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, response.getStatusCode()),
+                () -> Assertions.assertTrue(Objects.requireNonNull(response.getBody()).getErrorsFields().containsKey("email")),
+                () -> Assertions.assertTrue(Objects.requireNonNull(response.getBody()).getErrorsFields().containsKey("document")),
+                () -> Assertions.assertTrue(Objects.requireNonNull(response.getBody()).getErrorsFields().containsValue("Email is not valid")),
+                () -> Assertions.assertTrue(Objects.requireNonNull(response.getBody()).getErrorsFields().containsValue("Invalid document"))
+        );
+    }
+
+    /**
+     * Checks if the API will not save a duplicated costumer
+     *
+     * @throws IOException if there's an error on json parse
+     */
+    @Test
+    void shouldNotCreateDuplicatedCustomer() throws IOException {
+        CustomerRequest customerRequest = toEntity(jsonPath + "customer.json", CustomerRequest.class);
+
+        var response = restTemplate.
+                postForEntity(getPath(), customerRequest, CustomerResponse.class);
+        var failedResponse = restTemplate.
+                postForEntity(getPath(), customerRequest, ErrorResponse.class);
+
+        Assertions.assertAll(
+                () -> Assertions.assertNotNull(response),
+                () -> Assertions.assertEquals(HttpStatus.CREATED, response.getStatusCode()),
+                () -> Assertions.assertEquals(1L, Objects.requireNonNull(response.getBody()).getId()),
+                () -> Assertions.assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, failedResponse.getStatusCode()),
+                () -> Assertions.assertTrue
+                        (Objects.requireNonNull(failedResponse.getBody()).getMessage().contains("Unique index or primary key violation"))
         );
     }
 }
