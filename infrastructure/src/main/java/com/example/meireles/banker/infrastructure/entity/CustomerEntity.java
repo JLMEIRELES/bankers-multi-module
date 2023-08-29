@@ -36,5 +36,4 @@ public class CustomerEntity {
     @Column(unique = true, name = "email")
     private String email;
 
-
 }
