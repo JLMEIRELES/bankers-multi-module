@@ -5,6 +5,7 @@ import com.example.meireles.banker.application.dto.response.AccountResponse;
 import com.example.meireles.banker.application.mapper.AccountDtoMapper;
 import com.example.meireles.banker.domain.model.Account;
 import com.example.meireles.banker.domain.service.AccountService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;
 
+/**
+ * Class rest controller to manage {@link AccountController} endpoints
+ */
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "${account.controller}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -31,7 +35,14 @@ public class AccountController {
 
     private final AccountService accountService;
 
+    /**
+     * Creates a new account
+     *
+     * @param accountRequest an instance of {@link AccountRequest} content information about the account to be created
+     * @return an instance of {@link AccountResponse} content the number and digit of the created account
+     */
     @PostMapping
+    @Operation(summary = "Create a new account", description = "Create a new account and update or create it's costumer")
     public ResponseEntity<AccountResponse> addAccount(@Valid @RequestBody AccountRequest accountRequest){
         Account account = accountService.addAccount(accountDtoMapper.toAccount(accountRequest));
         AccountResponse accountResponse = accountDtoMapper.toAccountResponse(account);

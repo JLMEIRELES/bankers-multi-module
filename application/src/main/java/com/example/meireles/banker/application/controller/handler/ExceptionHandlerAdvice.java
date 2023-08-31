@@ -51,6 +51,13 @@ public class ExceptionHandlerAdvice {
         return ResponseEntity.unprocessableEntity().body(new ErrorResponse(HttpStatus.UNPROCESSABLE_ENTITY, ex.getMessage()));
     }
 
+    /**
+     * Creates a standard object of {@link AccountExistsException}. This error occurs
+     * when the account to be saved already exists
+     *
+     * @param ex the exception
+     * @return the @{@link ResponseEntity} content the error
+     */
     @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY)
     @ExceptionHandler(AccountExistsException.class)
     public ResponseEntity<ErrorResponse> handleAccountExistsException(AccountExistsException ex){

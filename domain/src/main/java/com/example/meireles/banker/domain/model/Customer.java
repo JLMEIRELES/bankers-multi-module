@@ -12,11 +12,9 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Customer {
-
     private Long id;
     private String document;
     private String name;
     private LocalDate bornDate;
     private String email;
-
 }

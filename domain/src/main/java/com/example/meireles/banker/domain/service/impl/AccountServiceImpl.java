@@ -12,6 +12,9 @@ public class AccountServiceImpl implements AccountService {
     @Autowired
     private AccountProvider accountProvider;
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Account addAccount(Account account) {
         return accountProvider.addAccount(account);

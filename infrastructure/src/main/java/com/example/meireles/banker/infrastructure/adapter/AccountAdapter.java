@@ -33,6 +33,9 @@ public class AccountAdapter implements AccountProvider {
 
     private final CustomerMapper customerMapper;
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Account addAccount(Account account) {
         Customer customer = account.getCustomer();
@@ -65,6 +68,10 @@ public class AccountAdapter implements AccountProvider {
         return accountMapper.toAccount(accountEntity);
     }
 
+    /**
+     * generated the number and digit of the account
+     * @param account the account
+     */
     private void generateNumberAndDigit(Account account) {
         account.setDigit(random.nextInt(10));
         account.setNumber(RandomStringUtils.randomNumeric(5));
