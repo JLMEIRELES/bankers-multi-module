@@ -43,11 +43,8 @@ public class CustomerController {
     @PostMapping
     @Operation(summary = "Create a new customer", description = "Create a juridic or physical person")
     public ResponseEntity<CustomerResponse> addCustomer(@Valid @RequestBody CustomerRequest customerRequest) {
-        var customer = customerDtoMapper.toCustomer(customerRequest);
-        var addedCustomer = customerService.addCustomer(customer);
-
-        CustomerResponse customerResponse = customerDtoMapper.toCustomerResponse(addedCustomer);
-
+        var customer = customerService.addCustomer(customerDtoMapper.toCustomer(customerRequest));
+        CustomerResponse customerResponse = customerDtoMapper.toCustomerResponse(customer);
         return ResponseEntity.created(URI.create(path + "/" + customerResponse.getId()))
                 .body(customerResponse);
     }

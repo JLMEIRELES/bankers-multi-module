@@ -7,6 +7,7 @@ import com.example.meireles.banker.infrastructure.mapper.CustomerMapper;
 import com.example.meireles.banker.infrastructure.repository.CustomerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @RequiredArgsConstructor
@@ -20,6 +21,7 @@ public class CustomerAdapter implements CustomerProvider {
      * {@inheritDoc}
      */
     @Override
+    @Transactional
     public Customer addCustomer(Customer customer) {
         CustomerEntity customerEntity = customerRepository.
                 save(customerMapper.toCustomerEntity(customer));

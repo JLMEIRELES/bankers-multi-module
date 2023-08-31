@@ -1,5 +1,6 @@
 package com.example.meireles.banker.application.controller.handler;
 
+import com.example.meireles.banker.domain.exception.AccountExistsException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -47,6 +48,12 @@ public class ExceptionHandlerAdvice {
     @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY)
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<ErrorResponse> handleDataBaseExceptions(DataIntegrityViolationException ex){
+        return ResponseEntity.unprocessableEntity().body(new ErrorResponse(HttpStatus.UNPROCESSABLE_ENTITY, ex.getMessage()));
+    }
+
+    @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY)
+    @ExceptionHandler(AccountExistsException.class)
+    public ResponseEntity<ErrorResponse> handleAccountExistsException(AccountExistsException ex){
         return ResponseEntity.unprocessableEntity().body(new ErrorResponse(HttpStatus.UNPROCESSABLE_ENTITY, ex.getMessage()));
     }
 
