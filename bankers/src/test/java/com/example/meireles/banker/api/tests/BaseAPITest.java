@@ -34,8 +34,8 @@ public abstract class BaseAPITest {
      *
      * @param jsonPath the path of the json to be mapped
      * @param object the target class
-     * @return the mapped object
      * @param <T> generics
+     * @return the mapped object
      * @throws IOException if there's an error on json parse
      */
     protected <T> T toEntity(String jsonPath, Class<T> object) throws IOException {
