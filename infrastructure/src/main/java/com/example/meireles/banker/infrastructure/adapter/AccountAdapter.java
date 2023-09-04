@@ -43,18 +43,17 @@ public class AccountAdapter implements AccountProvider {
         List<AccountEntity> accounts = new ArrayList<>();
 
         if (customerEntity.isPresent()) {
-            customer.setId(customerEntity.get().getId());
-            accounts = accountRepository.findByCustomer(customerMapper.toCustomerEntity(customer));
+            accounts = customerEntity.get().getAccounts();
             if (accounts.stream().anyMatch(a -> a.getAccountType().equals(account.getAccountType()))) {
                 throw new AccountExistsException
                         (String.format("The customer have already a %s account", account.getAccountType().name()));
             }
-        } else {
-            CustomerEntity createdCustomer = customerRepository.save(customerMapper.toCustomerEntity(customer));
-            customer.setId(createdCustomer.getId());
+            customer.setId(customerEntity.get().getId());
         }
 
-        // The customer can exist without an account, so we need to confirm if accounts is empty, before get the first account
+        CustomerEntity createdCustomer = customerRepository.save(customerMapper.toCustomerEntity(customer));
+        customer.setId(createdCustomer.getId());
+
         Optional<AccountEntity> firstAccount = accounts.stream().findFirst();
         if (firstAccount.isEmpty()) {
             generateNumberAndDigit(account);

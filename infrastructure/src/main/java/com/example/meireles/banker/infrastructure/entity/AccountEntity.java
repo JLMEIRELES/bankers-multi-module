@@ -30,7 +30,7 @@ public class AccountEntity {
     private Integer digit;
 
     @ManyToOne
-    @JoinColumn(name = "client_id")
+    @JoinColumn(name = "customer_id")
     private CustomerEntity customer;
 
     @Enumerated(EnumType.STRING)

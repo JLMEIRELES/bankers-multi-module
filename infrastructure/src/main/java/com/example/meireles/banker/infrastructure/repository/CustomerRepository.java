@@ -10,6 +10,7 @@ import java.util.Optional;
 
 @Repository
 public interface CustomerRepository extends JpaRepository<CustomerEntity, Long> {
-    @Query("SELECT c from CustomerEntity c WHERE c.document = :document")
+    @Query("SELECT c FROM CustomerEntity c LEFT JOIN FETCH c.accounts WHERE c.document = :document")
     Optional<CustomerEntity> findByDocument(@Param("document") String document);
+
 }

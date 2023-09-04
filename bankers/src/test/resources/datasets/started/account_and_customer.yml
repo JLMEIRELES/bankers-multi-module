@@ -1,0 +1,14 @@
+customer:
+  - id: 1
+    name: "lucas"
+    document: "12303364191"
+    email: "joaomeireles47@gmail.com"
+    born_date: '2000-01-28'
+
+account:
+  - id: 2
+    account_type : "CURRENT"
+    customer_id: 1
+    balance: 0
+    number: "2222"
+    digit: "1"

@@ -68,6 +68,8 @@ class AccountAdapterTest {
         when(accountMapper.toAccountEntity(any(Account.class))).thenReturn(accountEntity);
         when(accountRepository.save(any(AccountEntity.class))).thenReturn(accountEntity);
         when(accountMapper.toAccount(any(AccountEntity.class))).thenReturn(account);
+        when(customerRepository.save(any(CustomerEntity.class))).thenReturn(customerEntity);
+        doReturn(1L).when(customerEntity).getId();
 
         //when
         Account createdAccount = accountAdapter.addAccount(account);
@@ -102,6 +104,8 @@ class AccountAdapterTest {
         when(customerMapper.toCustomerEntity(any(Customer.class))).thenReturn(customerEntity);
         when(customerRepository.findByDocument(any(String.class))).thenReturn(Optional.ofNullable(customerEntity));
         when(accountMapper.toAccountEntity(any(Account.class))).thenReturn(accountEntity);
+        when(customerRepository.save(any(CustomerEntity.class))).thenReturn(customerEntity);
+        doReturn(1L).when(customerEntity).getId();
         doThrow(RuntimeException.class).when(accountRepository).save(accountEntity);
 
         //when and then
