@@ -1,6 +1,6 @@
 package com.example.meireles.banker.domain.model.enums;
 
-public enum AccountTypeEnum {
+public enum AccountType {
     PAYMENT,
     CURRENT,
     SAVING

@@ -1,7 +1,7 @@
 package com.example.meireles.banker.domain.service;
 
 import com.example.meireles.banker.domain.model.Account;
-import com.example.meireles.banker.domain.model.enums.AccountTypeEnum;
+import com.example.meireles.banker.domain.model.enums.AccountType;
 import com.example.meireles.banker.domain.provider.AccountProvider;
 import com.example.meireles.banker.domain.service.impl.AccountServiceImpl;
 import org.junit.jupiter.api.Assertions;
@@ -29,7 +29,7 @@ class AccountServiceTest {
     @Test
     void shouldCreateAccount(){
         //given
-        var account = spy(Account.builder().accountType(AccountTypeEnum.CURRENT).build());
+        var account = spy(Account.builder().accountType(AccountType.CURRENT).build());
 
         when(accountProvider.addAccount(any(Account.class))).thenReturn(account);
 
@@ -39,7 +39,7 @@ class AccountServiceTest {
         //then
         Assertions.assertAll(
                 () -> Assertions.assertNotNull(createdAccount),
-                () -> Assertions.assertEquals(AccountTypeEnum.CURRENT, account.getAccountType()),
+                () -> Assertions.assertEquals(AccountType.CURRENT, account.getAccountType()),
                 () -> Assertions.assertEquals(account, createdAccount),
                 () -> verify(accountProvider, times(1)).addAccount(account)
         );

@@ -1,6 +1,6 @@
 package com.example.meireles.banker.infrastructure.entity;
 
-import com.example.meireles.banker.domain.model.enums.AccountTypeEnum;
+import com.example.meireles.banker.domain.model.enums.AccountType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -36,7 +36,7 @@ public class AccountEntity {
     @Enumerated(EnumType.STRING)
     @NotNull
     @Column(name = "account_type")
-    private AccountTypeEnum accountType;
+    private AccountType accountType;
 
     @Column(name = "balance")
     @NotNull

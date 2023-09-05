@@ -1,6 +1,6 @@
 package com.example.meireles.banker.domain.model;
 
-import com.example.meireles.banker.domain.model.enums.AccountTypeEnum;
+import com.example.meireles.banker.domain.model.enums.AccountType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @Builder
 public class Account {
-    private AccountTypeEnum accountType;
+    private AccountType accountType;
     private Customer customer;
     private String number;
     private Integer digit;

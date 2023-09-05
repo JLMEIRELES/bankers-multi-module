@@ -1,6 +1,6 @@
 package com.example.meireles.banker.application.dto.request;
 
-import com.example.meireles.banker.application.dto.enums.AccountType;
+import com.example.meireles.banker.domain.model.enums.AccountType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
