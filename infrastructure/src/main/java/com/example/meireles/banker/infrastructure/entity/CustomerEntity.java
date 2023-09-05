@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -18,6 +19,7 @@ public class CustomerEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(name = "customer_seq", sequenceName = "customer_id_seq", allocationSize = 1)
     @Column(name = "id")
     private Long id;
 
@@ -39,5 +41,14 @@ public class CustomerEntity {
 
     @OneToMany(mappedBy = "customer")
     private List<AccountEntity> accounts;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "updated_at")
+    private Date updatedAt;
+
+    @PreUpdate
+    public void preUpdate() {
+        updatedAt = new Date();
+    }
 
 }

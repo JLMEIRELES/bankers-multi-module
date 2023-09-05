@@ -6,7 +6,7 @@ customer:
     born_date: '2000-01-28'
 
 account:
-  - id: 2
+  - id: 1
     account_type : "CURRENT"
     customer_id: 1
     balance: 0

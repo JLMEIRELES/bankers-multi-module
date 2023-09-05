@@ -5,6 +5,8 @@ import com.example.meireles.banker.application.dto.request.CustomerRequest;
 import com.example.meireles.banker.application.dto.response.CustomerResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.github.database.rider.core.api.dataset.DataSet;
+import com.github.database.rider.core.api.dataset.ExpectedDataSet;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -39,6 +41,7 @@ class CustomerAPITest extends BaseAPITest {
      * @throws IOException if there's an error on json parse
      */
     @Test
+    @ExpectedDataSet("/started/customer.yml")
     void shouldCreateCustomer() throws IOException {
         CustomerRequest customerRequest =
                 toEntity(jsonPath + "customer.json", CustomerRequest.class);
@@ -48,8 +51,7 @@ class CustomerAPITest extends BaseAPITest {
 
         Assertions.assertAll(
                 () -> Assertions.assertNotNull(response),
-                () -> Assertions.assertEquals(HttpStatus.CREATED, response.getStatusCode()),
-                () -> Assertions.assertEquals(1L, Objects.requireNonNull(response.getBody()).getId())
+                () -> Assertions.assertEquals(HttpStatus.CREATED, response.getStatusCode())
         );
     }
 
@@ -81,21 +83,17 @@ class CustomerAPITest extends BaseAPITest {
      * @throws IOException if there's an error on json parse
      */
     @Test
+    @DataSet(value = "/started/customer.yml")
     void shouldNotCreateDuplicatedCustomer() throws IOException {
         CustomerRequest customerRequest = toEntity(jsonPath + "customer.json", CustomerRequest.class);
 
         var response = restTemplate.
-                postForEntity(getPath(), customerRequest, CustomerResponse.class);
-        var failedResponse = restTemplate.
                 postForEntity(getPath(), customerRequest, ErrorResponse.class);
 
         Assertions.assertAll(
-                () -> Assertions.assertNotNull(response),
-                () -> Assertions.assertEquals(HttpStatus.CREATED, response.getStatusCode()),
-                () -> Assertions.assertEquals(1L, Objects.requireNonNull(response.getBody()).getId()),
-                () -> Assertions.assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, failedResponse.getStatusCode()),
+                () -> Assertions.assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, response.getStatusCode()),
                 () -> Assertions.assertTrue
-                        (Objects.requireNonNull(failedResponse.getBody()).getMessage().contains("Unique index or primary key violation"))
+                        (Objects.requireNonNull(response.getBody()).getMessage().contains("Unique index or primary key violation"))
         );
     }
 }

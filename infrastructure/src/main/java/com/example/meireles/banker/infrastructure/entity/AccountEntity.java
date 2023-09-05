@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 @Entity
 @Builder
@@ -18,6 +19,7 @@ public class AccountEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(name = "account_seq", sequenceName = "account_id_seq", allocationSize = 1)
     @Column(name = "id")
     private Long id;
 
@@ -41,4 +43,13 @@ public class AccountEntity {
     @Column(name = "balance")
     @NotNull
     private BigDecimal balance;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "updated_at")
+    private Date updatedAt;
+
+    @PreUpdate
+    public void preUpdate() {
+        updatedAt = new Date();
+    }
 }
