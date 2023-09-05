@@ -4,6 +4,7 @@ import com.example.meireles.banker.domain.model.enums.AccountType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -44,12 +45,8 @@ public class AccountEntity {
     @NotNull
     private BigDecimal balance;
 
-    @Temporal(TemporalType.TIMESTAMP)
+    @UpdateTimestamp
     @Column(name = "updated_at")
     private Date updatedAt;
 
-    @PreUpdate
-    public void preUpdate() {
-        updatedAt = new Date();
-    }
 }

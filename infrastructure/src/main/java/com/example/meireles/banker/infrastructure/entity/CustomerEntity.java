@@ -3,6 +3,7 @@ package com.example.meireles.banker.infrastructure.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDate;
 import java.util.Date;
@@ -32,7 +33,7 @@ public class CustomerEntity {
     private String name;
 
     @NotNull
-    @Column(name = "bornDate")
+    @Column(name = "born_date")
     private LocalDate bornDate;
 
     @NotNull
@@ -42,13 +43,8 @@ public class CustomerEntity {
     @OneToMany(mappedBy = "customer")
     private List<AccountEntity> accounts;
 
-    @Temporal(TemporalType.TIMESTAMP)
+    @UpdateTimestamp
     @Column(name = "updated_at")
     private Date updatedAt;
-
-    @PreUpdate
-    public void preUpdate() {
-        updatedAt = new Date();
-    }
 
 }
