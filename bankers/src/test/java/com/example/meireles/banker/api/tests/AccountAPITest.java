@@ -1,5 +1,6 @@
 package com.example.meireles.banker.api.tests;
 
+import com.example.meireles.banker.application.controller.handler.ErrorResponse;
 import com.example.meireles.banker.application.dto.request.AccountRequest;
 import com.example.meireles.banker.application.dto.response.AccountResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -78,4 +79,48 @@ class AccountAPITest extends BaseAPITest {
                 () -> Assertions.assertNotNull(Objects.requireNonNull(response.getBody()).getDigit())
         );
     }
+
+    /**
+     * Checks if the account will be not created, if exists an account of this type that belongs to customer
+     *
+     * @throws IOException if there's an error on json parse
+     */
+    @Test
+    @DataSet(value = "started/account_and_customer.yml", skipCleaningFor = "flyway_schema_history")
+    void shouldNotCreateAccountForSameType() throws IOException {
+        AccountRequest accountRequest =
+                toEntity(resourcesPath + "/json/new_current_account.json", AccountRequest.class);
+
+        var response = restTemplate.
+                postForEntity(getPath(), accountRequest, ErrorResponse.class);
+
+        Assertions.assertAll(
+                () -> Assertions.assertNotNull(response),
+                () -> Assertions.assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, response.getStatusCode()),
+                () -> Assertions.assertNotNull(Objects.requireNonNull(response.getBody()).getMessage()),
+                () -> Assertions.assertTrue(Objects.requireNonNull(response.getBody()).getMessage().contains("The customer have already a CURRENT account"))
+        );
+    }
+
+    /**
+     * Checks if the account will be not created, if the account type is not informed in the request
+     *
+     * @throws IOException if there's an error on json parse
+     */
+    @Test
+    void shouldNotCreateAccountWithoutType() throws IOException {
+        AccountRequest accountRequest =
+                toEntity(resourcesPath + "/json/account_without_type.json", AccountRequest.class);
+
+        var response = restTemplate.postForEntity(getPath(), accountRequest, ErrorResponse.class);
+
+        Assertions.assertAll(
+                () -> Assertions.assertNotNull(response),
+                () -> Assertions.assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, response.getStatusCode()),
+                () -> Assertions.assertTrue(Objects.requireNonNull(response.getBody()).getErrorsFields().containsKey("accountType")),
+                () -> Assertions.assertTrue(Objects.requireNonNull(response.getBody()).getErrorsFields().containsValue("Is necessary to inform the account type"))
+
+        );
+    }
+
 }
