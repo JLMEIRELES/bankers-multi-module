@@ -1,6 +1,8 @@
 package com.example.meireles.banker.api.tests;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.database.rider.core.api.configuration.DBUnit;
+import com.github.database.rider.junit5.api.DBRider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
@@ -8,6 +10,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.io.File;
@@ -17,6 +20,9 @@ import java.io.IOException;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 @RequiredArgsConstructor
+@DBRider
+@DBUnit(cacheConnection = false, alwaysCleanBefore = true, alwaysCleanAfter = true, raiseExceptionOnCleanUp = true)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public abstract class BaseAPITest {
 
     protected String basePath;
@@ -34,8 +40,8 @@ public abstract class BaseAPITest {
      *
      * @param jsonPath the path of the json to be mapped
      * @param object the target class
-     * @return the mapped object
      * @param <T> generics
+     * @return the mapped object
      * @throws IOException if there's an error on json parse
      */
     protected <T> T toEntity(String jsonPath, Class<T> object) throws IOException {
