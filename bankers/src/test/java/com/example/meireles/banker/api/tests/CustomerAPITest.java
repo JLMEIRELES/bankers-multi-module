@@ -51,6 +51,7 @@ class CustomerAPITest extends BaseAPITest {
 
         Assertions.assertAll(
                 () -> Assertions.assertNotNull(response),
+                () -> Assertions.assertEquals(1L, Objects.requireNonNull(response.getBody()).getId()),
                 () -> Assertions.assertEquals(HttpStatus.CREATED, response.getStatusCode())
         );
     }
