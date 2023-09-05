@@ -23,7 +23,6 @@ public class CustomerAdapter implements CustomerProvider {
      */
     @Override
     public Customer addCustomer(Customer customer) {
-        log.debug(customerRepository.findAll().toString());
         CustomerEntity customerEntity = customerRepository.
                 save(customerMapper.toCustomerEntity(customer));
         return customerMapper.toCustomer(customerEntity);
