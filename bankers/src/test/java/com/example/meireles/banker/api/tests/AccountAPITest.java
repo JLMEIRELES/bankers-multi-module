@@ -63,7 +63,7 @@ class AccountAPITest extends BaseAPITest {
      * @throws IOException if there's an error on json parse
      */
     @Test
-    @DataSet(value = "started/account_and_customer.yml", skipCleaningFor = "flyway_schema_history")
+    @DataSet(value = "started/account_and_customer.yml")
     @ExpectedDataSet(value = "expected/change_customer_and_create_new_account.yml")
     void shouldUpdateCustomer() throws IOException {
         AccountRequest accountRequest =

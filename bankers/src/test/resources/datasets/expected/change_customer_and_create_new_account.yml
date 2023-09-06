@@ -7,14 +7,16 @@ customer:
 
 account:
   - id: 1
-    account_type : "PAYMENT"
-    customer_id: 1
-    balance: 0
-    number: "2222"
-    digit: "1"
-  - id: 2
     account_type: "CURRENT"
     customer_id: 1
     balance: 0
     number: "2222"
     digit: "1"
+
+  - id: 2
+    account_type: "PAYMENT"
+    customer_id: 1
+    balance: 0
+    number: "2222"
+    digit: "1"
+

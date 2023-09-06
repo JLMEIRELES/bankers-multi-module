@@ -11,6 +11,7 @@ import com.example.meireles.banker.infrastructure.mapper.CustomerMapper;
 import com.example.meireles.banker.infrastructure.repository.AccountRepository;
 import com.example.meireles.banker.infrastructure.repository.CustomerRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Component;
 
@@ -21,6 +22,7 @@ import java.util.Random;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class AccountAdapter implements AccountProvider {
 
     private final Random random;
@@ -39,31 +41,41 @@ public class AccountAdapter implements AccountProvider {
     @Override
     public Account addAccount(Account account) {
         Customer customer = account.getCustomer();
+        log.info("Verifying if customer with this document already exists");
         Optional<CustomerEntity> customerEntity = customerRepository.findByDocument(customer.getDocument());
         List<AccountEntity> accounts = new ArrayList<>();
 
         if (customerEntity.isPresent()) {
+            log.info("customer found. Customer = {}", customerEntity);
             accounts = customerEntity.get().getAccounts();
             if (accounts.stream().anyMatch(a -> a.getAccountType().equals(account.getAccountType()))) {
+                log.error("Customer have already an {} account", account.getAccountType());
                 throw new AccountExistsException
                         (String.format("The customer have already a %s account", account.getAccountType().name()));
             }
             customer.setId(customerEntity.get().getId());
         }
 
+        log.info("Saving or updating customer. Customer = {}", customer);
         CustomerEntity createdCustomer = customerRepository.save(customerMapper.toCustomerEntity(customer));
+        log.info("Customer saved. Customer = {}", createdCustomer);
         customer.setId(createdCustomer.getId());
 
+        log.info("Verifying if customer has already an account, with another type");
         Optional<AccountEntity> firstAccount = accounts.stream().findFirst();
         if (firstAccount.isEmpty()) {
+            log.info("Account not founding. Generating new number and digit");
             generateNumberAndDigit(account);
         } else {
+            log.info("Account founded. Account = {}. Setting new account the same number and digit.", firstAccount);
             account.setDigit(firstAccount.get().getDigit());
             account.setNumber(firstAccount.get().getNumber());
         }
 
         account.setCustomer(customer);
+        log.info("Saving Account = {}", account);
         AccountEntity accountEntity = accountRepository.save(accountMapper.toAccountEntity(account));
+        log.info("Account saved. Account = {}", accountEntity);
         return accountMapper.toAccount(accountEntity);
     }
 

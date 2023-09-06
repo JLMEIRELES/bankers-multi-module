@@ -10,7 +10,6 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.io.File;
@@ -22,7 +21,6 @@ import java.io.IOException;
 @RequiredArgsConstructor
 @DBRider
 @DBUnit(cacheConnection = false, alwaysCleanBefore = true, alwaysCleanAfter = true, raiseExceptionOnCleanUp = true)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public abstract class BaseAPITest {
 
     protected String basePath;

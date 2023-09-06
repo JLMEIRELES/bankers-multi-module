@@ -6,10 +6,12 @@ import com.example.meireles.banker.infrastructure.entity.CustomerEntity;
 import com.example.meireles.banker.infrastructure.mapper.CustomerMapper;
 import com.example.meireles.banker.infrastructure.repository.CustomerRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class CustomerAdapter implements CustomerProvider {
 
     private final CustomerRepository customerRepository;
@@ -21,8 +23,10 @@ public class CustomerAdapter implements CustomerProvider {
      */
     @Override
     public Customer addCustomer(Customer customer) {
+        log.info("Saving Customer = {} in database", customer);
         CustomerEntity customerEntity = customerRepository.
                 save(customerMapper.toCustomerEntity(customer));
+        log.info("Customer = {} was saved", customerEntity);
         return customerMapper.toCustomer(customerEntity);
     }
 }

@@ -40,6 +40,7 @@ public class ErrorResponse {
         this.errorsFields = errorsField;
         this.status = status.value();
         this.timestamp = LocalDateTime.now();
+        this.message = errorsField.toString();
     }
 
     /**

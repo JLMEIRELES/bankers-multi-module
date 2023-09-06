@@ -4,8 +4,10 @@ import com.example.meireles.banker.domain.model.enums.AccountType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 @Entity
 @Builder
@@ -18,6 +20,7 @@ public class AccountEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(name = "account_seq", sequenceName = "account_id_seq", allocationSize = 1)
     @Column(name = "id")
     private Long id;
 
@@ -41,4 +44,9 @@ public class AccountEntity {
     @Column(name = "balance")
     @NotNull
     private BigDecimal balance;
+
+    @UpdateTimestamp
+    @Column(name = "updated_at")
+    private Date updatedAt;
+
 }
