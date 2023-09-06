@@ -23,8 +23,10 @@ public class CustomerAdapter implements CustomerProvider {
      */
     @Override
     public Customer addCustomer(Customer customer) {
+        log.info("Saving Customer = {} in database", customer);
         CustomerEntity customerEntity = customerRepository.
                 save(customerMapper.toCustomerEntity(customer));
+        log.info("Customer = {} was saved", customerEntity);
         return customerMapper.toCustomer(customerEntity);
     }
 }
