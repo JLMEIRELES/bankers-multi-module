@@ -7,6 +7,7 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 public class Address {
+    private Long id;
     private String zipCode;
     private String street;
     private String complement;

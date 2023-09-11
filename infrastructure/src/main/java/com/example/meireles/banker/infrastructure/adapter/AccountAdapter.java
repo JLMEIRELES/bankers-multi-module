@@ -7,6 +7,8 @@ import com.example.meireles.banker.domain.provider.AccountProvider;
 import com.example.meireles.banker.infrastructure.entity.AccountEntity;
 import com.example.meireles.banker.infrastructure.entity.CustomerEntity;
 import com.example.meireles.banker.infrastructure.mapper.AccountMapper;
+import com.example.meireles.banker.infrastructure.mapper.CustomerMapper;
+import com.example.meireles.banker.infrastructure.mapper.util.ReflectionMapper;
 import com.example.meireles.banker.infrastructure.repository.AccountRepository;
 import com.example.meireles.banker.infrastructure.repository.CustomerRepository;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +36,9 @@ public class AccountAdapter implements AccountProvider {
 
     private final CustomerAdapter customerAdapter;
 
+    private final ReflectionMapper reflectionMapper;
+
+    private final CustomerMapper customerMapper;
 
     /**
      * {@inheritDoc}
@@ -54,6 +59,8 @@ public class AccountAdapter implements AccountProvider {
                         (String.format("The customer have already a %s account", account.getAccountType().name()));
             }
             customer.setId(customerEntity.get().getId());
+            reflectionMapper.merge(customer.getAddress(),
+                    customerMapper.toAddress(customerEntity.get().getAddress()));
         }
 
         log.info("Saving or updating customer. Customer = {}", customer);

@@ -52,6 +52,7 @@ public class CustomerEntity {
     private Date updatedAt;
 
     @PrePersist
+    @PreUpdate
     public void setAddressCustomer(){
         this.address.setCustomer(this);
     }
