@@ -17,7 +17,7 @@ public class AddressRequest {
     @Schema(description = "Address zipCode", requiredMode = Schema.RequiredMode.REQUIRED)
     private String zipCode;
 
-    @Schema(description = "Address city")
+    @Schema(description = "Address street")
     private String street;
 
     @Schema(description = "Address complement")

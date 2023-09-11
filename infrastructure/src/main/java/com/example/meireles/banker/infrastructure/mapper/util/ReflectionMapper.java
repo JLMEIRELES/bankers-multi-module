@@ -49,7 +49,7 @@ public class ReflectionMapper {
                     field.getType());
         } catch (NoSuchMethodException e){
             log.error("Set method not founded for field = {}", field);
-            throw new ProcessException("Set Method not found for that field", e);
+            throw new ProcessException("Set Method not founded for that field", e);
         }
     }
 
@@ -59,7 +59,7 @@ public class ReflectionMapper {
                     getMethod("get" + capitalizeFirstLetter(field.getName()));
         } catch (NoSuchMethodException e){
             log.error("Get method not founded for field = {}", field);
-            throw new ProcessException("Set Method not found for that field", e);
+            throw new ProcessException("Get Method not founded for that field", e);
         }
     }
 

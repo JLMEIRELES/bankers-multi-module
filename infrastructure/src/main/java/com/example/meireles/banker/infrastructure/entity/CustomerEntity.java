@@ -51,4 +51,9 @@ public class CustomerEntity {
     @Column(name = "updated_at")
     private Date updatedAt;
 
+    @PrePersist
+    public void setAddressCustomer(){
+        this.address.setCustomer(this);
+    }
+
 }
