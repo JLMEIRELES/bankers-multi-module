@@ -5,7 +5,6 @@ import com.example.meireles.banker.domain.model.Customer;
 import com.example.meireles.banker.infrastructure.entity.AccountEntity;
 import com.example.meireles.banker.infrastructure.entity.CustomerEntity;
 import com.example.meireles.banker.infrastructure.mapper.AccountMapper;
-import com.example.meireles.banker.infrastructure.mapper.CustomerMapper;
 import com.example.meireles.banker.infrastructure.repository.AccountRepository;
 import com.example.meireles.banker.infrastructure.repository.CustomerRepository;
 import org.junit.jupiter.api.Assertions;
@@ -29,10 +28,10 @@ class AccountAdapterTest {
     private AccountAdapter accountAdapter;
 
     @Mock
-    private AccountMapper accountMapper;
+    private CustomerAdapter customerAdapter;
 
     @Mock
-    private CustomerMapper customerMapper;
+    private AccountMapper accountMapper;
 
     @Mock
     private AccountRepository accountRepository;
@@ -63,12 +62,11 @@ class AccountAdapterTest {
 
         when(random.nextInt(anyInt())).thenReturn(1);
         when(account.getCustomer()).thenReturn(customer);
-        when(customerMapper.toCustomerEntity(any(Customer.class))).thenReturn(customerEntity);
         when(customerRepository.findByDocument(any(String.class))).thenReturn(Optional.ofNullable(customerEntity));
         when(accountMapper.toAccountEntity(any(Account.class))).thenReturn(accountEntity);
         when(accountRepository.save(any(AccountEntity.class))).thenReturn(accountEntity);
         when(accountMapper.toAccount(any(AccountEntity.class))).thenReturn(account);
-        when(customerRepository.save(any(CustomerEntity.class))).thenReturn(customerEntity);
+        when(customerAdapter.addCustomer(any(Customer.class))).thenReturn(customer);
         doReturn(1L).when(customerEntity).getId();
 
         //when
@@ -101,10 +99,9 @@ class AccountAdapterTest {
 
         when(random.nextInt(anyInt())).thenReturn(1);
         when(account.getCustomer()).thenReturn(customer);
-        when(customerMapper.toCustomerEntity(any(Customer.class))).thenReturn(customerEntity);
         when(customerRepository.findByDocument(any(String.class))).thenReturn(Optional.ofNullable(customerEntity));
         when(accountMapper.toAccountEntity(any(Account.class))).thenReturn(accountEntity);
-        when(customerRepository.save(any(CustomerEntity.class))).thenReturn(customerEntity);
+        when(customerAdapter.addCustomer(any(Customer.class))).thenReturn(customer);
         doReturn(1L).when(customerEntity).getId();
         doThrow(RuntimeException.class).when(accountRepository).save(accountEntity);
 
