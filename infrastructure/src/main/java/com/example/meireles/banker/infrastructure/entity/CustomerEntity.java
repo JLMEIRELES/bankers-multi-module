@@ -44,6 +44,7 @@ public class CustomerEntity {
     private List<AccountEntity> accounts;
 
     @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
     private AddressEntity address;
 
     @UpdateTimestamp
