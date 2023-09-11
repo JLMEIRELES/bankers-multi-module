@@ -1,15 +1,14 @@
 package com.example.meireles.banker.application.controller.handler;
 
 import com.example.meireles.banker.domain.exception.AccountExistsException;
+import com.example.meireles.banker.domain.exception.ProcessException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,7 +18,12 @@ import java.util.Map;
  */
 @RestControllerAdvice
 @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+@Slf4j
 public class ExceptionHandlerAdvice {
+
+    private static final String UNPROCESSABLE_MESSAGE = "An error occur, please contact the administrator";
+
+    private static final String METHOD = "method = {}";
 
     /**
      * Creates a standard object of {@link MethodArgumentNotValidException}. This error occurs
@@ -32,10 +36,13 @@ public class ExceptionHandlerAdvice {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> handleJakartaExceptions(MethodArgumentNotValidException ex){
         Map<String, String> errors = new HashMap<>();
-
         ex.getFieldErrors().
                 forEach(e -> errors.put(e.getField(), e.getDefaultMessage()));
-        return ResponseEntity.unprocessableEntity().body(new ErrorResponse(HttpStatus.UNPROCESSABLE_ENTITY, errors));
+
+        log.error(METHOD, ex.getClass().getSimpleName(), ex);
+        return ResponseEntity.unprocessableEntity().body(
+                new ErrorResponse(HttpStatus.UNPROCESSABLE_ENTITY, errors)
+        );
     }
 
     /**
@@ -48,7 +55,10 @@ public class ExceptionHandlerAdvice {
     @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY)
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<ErrorResponse> handleDataBaseExceptions(DataIntegrityViolationException ex){
-        return ResponseEntity.unprocessableEntity().body(new ErrorResponse(HttpStatus.UNPROCESSABLE_ENTITY, ex.getMessage()));
+        log.error(METHOD, ex.getClass().getSimpleName(), ex);
+        return ResponseEntity.unprocessableEntity().body(
+                new ErrorResponse(HttpStatus.UNPROCESSABLE_ENTITY, ex.getMessage())
+        );
     }
 
     /**
@@ -61,7 +71,19 @@ public class ExceptionHandlerAdvice {
     @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY)
     @ExceptionHandler(AccountExistsException.class)
     public ResponseEntity<ErrorResponse> handleAccountExistsException(AccountExistsException ex){
-        return ResponseEntity.unprocessableEntity().body(new ErrorResponse(HttpStatus.UNPROCESSABLE_ENTITY, ex.getMessage()));
+        log.error(METHOD, ex.getClass().getSimpleName(), ex);
+        return ResponseEntity.unprocessableEntity().body(
+                new ErrorResponse(HttpStatus.UNPROCESSABLE_ENTITY, ex.getMessage())
+        );
+    }
+
+    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(ProcessException.class)
+    public ResponseEntity<ErrorResponse> handleProcessException(ProcessException ex){
+        log.error(METHOD, ex.getClass().getSimpleName(), ex);
+        return ResponseEntity.internalServerError().body(
+                new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, UNPROCESSABLE_MESSAGE)
+        );
     }
 
 }

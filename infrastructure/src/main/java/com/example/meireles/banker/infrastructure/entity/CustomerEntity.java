@@ -43,6 +43,9 @@ public class CustomerEntity {
     @OneToMany(mappedBy = "customer")
     private List<AccountEntity> accounts;
 
+    @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL)
+    private AddressEntity address;
+
     @UpdateTimestamp
     @Column(name = "updated_at")
     private Date updatedAt;
