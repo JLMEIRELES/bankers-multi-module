@@ -86,7 +86,7 @@ class AccountAPITest extends BaseAPITest {
      * @throws IOException if there's an error on json parse
      */
     @Test
-    @DataSet(value = "started/account_and_customer.yml", skipCleaningFor = "flyway_schema_history")
+    @DataSet(value = "started/account_and_customer.yml")
     void shouldNotCreateAccountForSameType() throws IOException {
         AccountRequest accountRequest =
                 toEntity(resourcesPath + "/json/new_current_account.json", AccountRequest.class);

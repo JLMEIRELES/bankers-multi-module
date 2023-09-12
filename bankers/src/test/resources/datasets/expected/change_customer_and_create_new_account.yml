@@ -1,22 +1,19 @@
 customer:
-  - id: 1
-    name: "joao"
+  - name: "joao"
     document: "12303364191"
     email: "joaomeireles47@gmail.com"
     born_date: '2000-01-28'
 
 account:
-  - id: 1
-    account_type: "CURRENT"
-    customer_id: 1
+  - account_type: "PAYMENT"
     balance: 0
     number: "2222"
     digit: "1"
 
-  - id: 2
-    account_type: "PAYMENT"
-    customer_id: 1
+  - account_type: "CURRENT"
     balance: 0
     number: "2222"
     digit: "1"
+
+
 

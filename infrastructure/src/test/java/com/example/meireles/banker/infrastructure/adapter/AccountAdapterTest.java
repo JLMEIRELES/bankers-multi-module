@@ -5,6 +5,8 @@ import com.example.meireles.banker.domain.model.Customer;
 import com.example.meireles.banker.infrastructure.entity.AccountEntity;
 import com.example.meireles.banker.infrastructure.entity.CustomerEntity;
 import com.example.meireles.banker.infrastructure.mapper.AccountMapper;
+import com.example.meireles.banker.infrastructure.mapper.CustomerMapper;
+import com.example.meireles.banker.infrastructure.mapper.util.ReflectionMapper;
 import com.example.meireles.banker.infrastructure.repository.AccountRepository;
 import com.example.meireles.banker.infrastructure.repository.CustomerRepository;
 import org.junit.jupiter.api.Assertions;
@@ -34,6 +36,9 @@ class AccountAdapterTest {
     private AccountMapper accountMapper;
 
     @Mock
+    private CustomerMapper customerMapper;
+
+    @Mock
     private AccountRepository accountRepository;
 
     @Mock
@@ -41,6 +46,9 @@ class AccountAdapterTest {
 
     @Mock
     private Random random;
+
+    @Mock
+    private ReflectionMapper reflectionMapper;
 
     /**
      * Checks if {@link AccountAdapter#addAccount(Account)} are correctly saving an account,
