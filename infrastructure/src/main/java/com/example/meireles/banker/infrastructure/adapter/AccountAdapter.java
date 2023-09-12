@@ -59,8 +59,8 @@ public class AccountAdapter implements AccountProvider {
                         (String.format("The customer have already a %s account", account.getAccountType().name()));
             }
             customer.setId(customerEntity.get().getId());
-            reflectionMapper.merge(customer.getAddress(),
-                    customerMapper.toAddress(customerEntity.get().getAddress()));
+            var addressEntity = customerEntity.get().getAddress();
+            customer.getAddress().setId(addressEntity.getId());
         }
 
         log.info("Saving or updating customer. Customer = {}", customer);

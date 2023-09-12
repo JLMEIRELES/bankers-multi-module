@@ -24,4 +24,16 @@ public interface CustomerMapper {
     Address toAddress(Endereco endereco);
 
     Address toAddress(AddressEntity addressEntity);
+
+    default Address mergeAddress(Address targetAddress, Address sourceAddress) {
+        return Address.builder().
+                zipCode(targetAddress.getZipCode() != null ? targetAddress.getZipCode() : sourceAddress.getZipCode()).
+                state(targetAddress.getState() != null ? targetAddress.getState() : sourceAddress.getState()).
+                city(targetAddress.getCity() != null ? targetAddress.getCity() : sourceAddress.getCity()).
+                neighborhood(targetAddress.getNeighborhood() != null ? targetAddress.getNeighborhood() : sourceAddress.getNeighborhood()).
+                complement(targetAddress.getComplement() != null ? targetAddress.getComplement() : sourceAddress.getComplement()).
+                street(targetAddress.getStreet() != null ? targetAddress.getStreet() : sourceAddress.getStreet()).
+                id(targetAddress.getId() != null ? targetAddress.getId() : sourceAddress.getId()).
+                build();
+    }
 }

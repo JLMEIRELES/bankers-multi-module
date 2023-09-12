@@ -40,7 +40,8 @@ public class CustomerAdapter implements CustomerProvider {
         var address = customerMapper.toAddress(endereco);
         log.info("Address founded. Address = {}", address);
 
-        reflectionMapper.merge(customerAddress, address);
+        Address mergedAddress = customerMapper.mergeAddress(customerAddress, address);
+        customer.setAddress(mergedAddress);
 
         log.info("Saving Customer = {} in database", customer);
         CustomerEntity customerEntity = customerRepository.
