@@ -41,7 +41,7 @@ class CustomerAPITest extends BaseAPITest {
      * @throws IOException if there's an error on json parse
      */
     @Test
-    @ExpectedDataSet(value = "/started/customer.yml", ignoreCols = "id")
+    @ExpectedDataSet(value = "/started/customer.yml", ignoreCols = {"id", "customer_id"})
     void shouldCreateCustomer() throws IOException {
         CustomerRequest customerRequest =
                 toEntity(jsonPath + "customer.json", CustomerRequest.class);
@@ -51,6 +51,7 @@ class CustomerAPITest extends BaseAPITest {
 
         Assertions.assertAll(
                 () -> Assertions.assertNotNull(response),
+                () -> Assertions.assertNull(customerRequest.getAddressRequest().getStreet()),
                 () -> Assertions.assertEquals(HttpStatus.CREATED, response.getStatusCode())
         );
     }

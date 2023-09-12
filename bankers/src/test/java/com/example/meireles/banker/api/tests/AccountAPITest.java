@@ -65,7 +65,7 @@ class AccountAPITest extends BaseAPITest {
     @Test
     @DataSet(value = "started/account_and_customer.yml")
     @ExpectedDataSet(value = "expected/change_customer_and_create_new_account.yml")
-    void shouldUpdateCustomer() throws IOException {
+    void shouldUpdateCustomerAndAddress() throws IOException {
         AccountRequest accountRequest =
                 toEntity(resourcesPath + "/json/new_account.json", AccountRequest.class);
 

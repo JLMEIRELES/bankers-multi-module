@@ -15,5 +15,13 @@ account:
     number: "2222"
     digit: "1"
 
+address:
+  - customer_id: 1
+    zip_code: "72445030"
+    street: "Quadra 3"
+    neighborhood: "Setor Industrial (Gama)"
+    city: "Brasília"
+    state: "DF"
+
 
 
