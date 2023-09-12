@@ -7,7 +7,6 @@ import com.example.meireles.banker.infrastructure.client.ZipCodeClient;
 import com.example.meireles.banker.infrastructure.client.dto.Endereco;
 import com.example.meireles.banker.infrastructure.entity.CustomerEntity;
 import com.example.meireles.banker.infrastructure.mapper.CustomerMapper;
-import com.example.meireles.banker.infrastructure.mapper.util.ReflectionMapper;
 import com.example.meireles.banker.infrastructure.repository.CustomerRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +24,6 @@ public class CustomerAdapter implements CustomerProvider {
 
     private final ZipCodeClient zipCodeClient;
 
-    private final ReflectionMapper reflectionMapper;
 
     /**
      * {@inheritDoc}

@@ -6,7 +6,6 @@ import com.example.meireles.banker.infrastructure.client.ZipCodeClient;
 import com.example.meireles.banker.infrastructure.client.dto.Endereco;
 import com.example.meireles.banker.infrastructure.entity.CustomerEntity;
 import com.example.meireles.banker.infrastructure.mapper.CustomerMapper;
-import com.example.meireles.banker.infrastructure.mapper.util.ReflectionMapper;
 import com.example.meireles.banker.infrastructure.repository.CustomerRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -32,9 +31,6 @@ class CustomerAdapterTest {
 
     @Mock
     private ZipCodeClient zipCodeClient;
-
-    @Mock
-    private ReflectionMapper reflectionMapper;
 
     /**
      * Checks if Customer adapter are correctly saving Customer, calling {@link CustomerRepository#save(Object)}
