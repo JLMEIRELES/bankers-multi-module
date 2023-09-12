@@ -1,6 +1,7 @@
 package com.example.meireles.banker.infrastructure.adapter;
 
 import com.example.meireles.banker.domain.model.Account;
+import com.example.meireles.banker.domain.model.Address;
 import com.example.meireles.banker.domain.model.Customer;
 import com.example.meireles.banker.infrastructure.entity.AccountEntity;
 import com.example.meireles.banker.infrastructure.entity.CustomerEntity;
@@ -66,16 +67,14 @@ class AccountAdapterTest {
                 document("12345678910").
                 build()
                 );
-        CustomerEntity customerEntity = mock(CustomerEntity.class);
 
         when(random.nextInt(anyInt())).thenReturn(1);
         when(account.getCustomer()).thenReturn(customer);
-        when(customerRepository.findByDocument(any(String.class))).thenReturn(Optional.ofNullable(customerEntity));
+        when(customerRepository.findByDocument(any(String.class))).thenReturn(Optional.empty());
         when(accountMapper.toAccountEntity(any(Account.class))).thenReturn(accountEntity);
         when(accountRepository.save(any(AccountEntity.class))).thenReturn(accountEntity);
         when(accountMapper.toAccount(any(AccountEntity.class))).thenReturn(account);
         when(customerAdapter.addCustomer(any(Customer.class))).thenReturn(customer);
-        doReturn(1L).when(customerEntity).getId();
 
         //when
         Account createdAccount = accountAdapter.addAccount(account);
@@ -104,13 +103,13 @@ class AccountAdapterTest {
                 document("12345678910").
                 build()
         );
+        Address address = mock(Address.class);
 
         when(random.nextInt(anyInt())).thenReturn(1);
         when(account.getCustomer()).thenReturn(customer);
-        when(customerRepository.findByDocument(any(String.class))).thenReturn(Optional.ofNullable(customerEntity));
+        when(customerRepository.findByDocument(any(String.class))).thenReturn(Optional.empty());
         when(accountMapper.toAccountEntity(any(Account.class))).thenReturn(accountEntity);
         when(customerAdapter.addCustomer(any(Customer.class))).thenReturn(customer);
-        doReturn(1L).when(customerEntity).getId();
         doThrow(RuntimeException.class).when(accountRepository).save(accountEntity);
 
         //when and then
