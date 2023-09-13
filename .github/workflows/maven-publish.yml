@@ -1,41 +1,32 @@
-name: Java CI with PostgreSQL
-
+name: my first workflow for a java project
 on:
-  [push]
+  push:
+    branches: [ master ]
 
 jobs:
-  build-and-test:
-
+  publish:
     runs-on: ubuntu-latest
-
-    services:
-      postgres:
-        image: postgres:latest
-        env:
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: banker
-          DB_PORT: 5432
-          DB_SERVER: postgres
-        ports:
-          - 5432
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Set up JDK 17
-        uses: actions/setup-java@v2
+      - uses: actions/checkout@v2
+      - uses: actions/setup-java@v1
         with:
-          java-version: '17'
-          distribution: 'temurin'
-
-      - name: Build with Maven
-        run: mvn --batch-mode --update-snapshots package
-
-      - name: Run tests
-        run: mvn clean install
-
-      - name: Debug Environment Variables
+          java-version: 17
+          settings-path: ".m2/"
+      - uses: actions/cache@v2
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-${{ hashFiles('**/pom.xml') }}
+      - name: Publish package
+        run: mvn $MAVEN_CLI_OPTS clean deploy
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MAVEN_CLI_OPTS: "-s .m2/settings.xml --batch-mode"
+      - name: Copying target jar
         run: |
-          echo "DB_SERVER: $DB_SERVER"
-          echo "DB_PORT: $DB_PORT"
+          mkdir myTarget
+          cp target/*.jar myTarget
+      - name: Uploading jar
+        uses: actions/upload-artifact@v2
+        with:
+          name: myPackage
+          path: myTarget
