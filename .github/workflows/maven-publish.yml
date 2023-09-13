@@ -34,3 +34,8 @@ jobs:
 
       - name: Run tests
         run: mvn clean install
+
+      - name: Debug Environment Variables
+        run: |
+          echo "DB_SERVER: $DB_SERVER"
+          echo "DB_PORT: $DB_PORT"
