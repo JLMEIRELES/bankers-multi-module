@@ -13,7 +13,9 @@ jobs:
         image: postgres:latest
         env:
           POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: bankers
+          POSTGRES_DB: banker
+          DB_PORT: 5432
+          DB_SERVER: postgres
         ports:
           - 5432
 
