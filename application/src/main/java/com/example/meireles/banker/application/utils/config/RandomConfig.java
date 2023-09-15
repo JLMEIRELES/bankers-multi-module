@@ -12,7 +12,7 @@ import java.util.Random;
 public class RandomConfig {
 
     /**
-     * A construct that created and injects a dependency of {@link Random}
+     * A construct that creates and injects a dependency of {@link Random}
      * @return the created {@link Random}
      */
     @Bean

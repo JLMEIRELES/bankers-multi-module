@@ -6,9 +6,18 @@ customer:
     born_date: '2000-01-28'
 
 account:
-  - id: 1
+  - id: 3
     account_type : "CURRENT"
     customer_id: 1
     balance: 0
     number: "2222"
     digit: "1"
+
+address:
+  - customer_id : 1
+    zip_code: "72812550"
+    street: "R. José Roriz"
+    neighborhood: "SHIS"
+    city: "Luziânia"
+    state: "GO"
+    complement: "Casa 21"

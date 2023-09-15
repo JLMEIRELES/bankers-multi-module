@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
 public class ValidationConfig {
 
     /**
-     * A construct that created and injects a dependency of {@link CPFValidator}
+     * A construct that creates and injects a dependency of {@link CPFValidator}
      * @return the created {@link CPFValidator}
      */
     @Bean
@@ -23,7 +23,7 @@ public class ValidationConfig {
     }
 
     /**
-     * A construct that created and injects a dependency of {@link CNPJValidator}
+     * A construct that creates and injects a dependency of {@link CNPJValidator}
      * @return the created {@link CNPJValidator}
      */
     @Bean

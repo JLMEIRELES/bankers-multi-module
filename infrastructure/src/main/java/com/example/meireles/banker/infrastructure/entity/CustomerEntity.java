@@ -43,8 +43,18 @@ public class CustomerEntity {
     @OneToMany(mappedBy = "customer")
     private List<AccountEntity> accounts;
 
+    @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
+    private AddressEntity address;
+
     @UpdateTimestamp
     @Column(name = "updated_at")
     private Date updatedAt;
+
+    @PrePersist
+    @PreUpdate
+    public void setAddressCustomer(){
+        this.address.setCustomer(this);
+    }
 
 }

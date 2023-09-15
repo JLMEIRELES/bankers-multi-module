@@ -17,4 +17,5 @@ public class Customer {
     private String name;
     private LocalDate bornDate;
     private String email;
+    private Address address;
 }

@@ -1,6 +1,9 @@
 package com.example.meireles.banker.infrastructure.adapter;
 
+import com.example.meireles.banker.domain.model.Address;
 import com.example.meireles.banker.domain.model.Customer;
+import com.example.meireles.banker.infrastructure.client.ZipCodeClient;
+import com.example.meireles.banker.infrastructure.client.dto.Endereco;
 import com.example.meireles.banker.infrastructure.entity.CustomerEntity;
 import com.example.meireles.banker.infrastructure.mapper.CustomerMapper;
 import com.example.meireles.banker.infrastructure.repository.CustomerRepository;
@@ -26,6 +29,9 @@ class CustomerAdapterTest {
     @Mock
     private CustomerRepository customerRepository;
 
+    @Mock
+    private ZipCodeClient zipCodeClient;
+
     /**
      * Checks if Customer adapter are correctly saving Customer, calling {@link CustomerRepository#save(Object)}
      */
@@ -34,10 +40,19 @@ class CustomerAdapterTest {
         //given
         Customer customer = mock(Customer.class);
         CustomerEntity customerEntity = mock(CustomerEntity.class);
+        Address address = spy(Address.builder().
+                zipCode("zipCode").
+                build()
+        );
+        Endereco endereco = mock(Endereco.class);
 
+
+        when(customer.getAddress()).thenReturn(address);
         when(customerMapper.toCustomerEntity(any(Customer.class))).thenReturn(customerEntity);
         when(customerRepository.save(any(CustomerEntity.class))).thenReturn(customerEntity);
         when(customerMapper.toCustomer(any(CustomerEntity.class))).thenReturn(customer);
+        when(zipCodeClient.getAddress(any(String.class))).thenReturn(endereco);
+        when(customerMapper.toAddress(endereco)).thenReturn(address);
 
         //when
         Customer createdCustomer = customerAdapter.addCustomer(customer);
@@ -58,8 +73,16 @@ class CustomerAdapterTest {
         //given
         Customer customer = mock(Customer.class);
         CustomerEntity customerEntity = mock(CustomerEntity.class);
+        Address address = spy(Address.builder().
+                zipCode("zipCode").
+                build()
+        );
+        Endereco endereco = mock(Endereco.class);
 
+        when(customer.getAddress()).thenReturn(address);
         when(customerMapper.toCustomerEntity(any(Customer.class))).thenReturn(customerEntity);
+        when(zipCodeClient.getAddress(any(String.class))).thenReturn(endereco);
+        when(customerMapper.toAddress(endereco)).thenReturn(address);
         doThrow(RuntimeException.class).when(customerRepository).save(customerEntity);
 
         //when and then

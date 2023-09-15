@@ -2,7 +2,9 @@ package com.example.meireles.banker.application.dto.request;
 
 import com.example.meireles.banker.application.utils.validations.annotation.Document;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -38,5 +40,11 @@ public class CustomerRequest {
     @Email(message = "Email is not valid", regexp = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@"
             + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$")
     private String email;
+
+    @Valid
+    @JsonProperty("address")
+    @NotNull
+    @Schema(description = "Customer address", requiredMode = Schema.RequiredMode.REQUIRED)
+    private AddressRequest addressRequest;
 
 }

@@ -4,3 +4,11 @@ customer:
     document: "12303364191"
     email: "joaomeireles47@gmail.com"
     born_date: '2000-01-28'
+
+address:
+  - customer_id: 1
+    zip_code: "72445030"
+    street: "Quadra 3"
+    neighborhood: "Setor Industrial (Gama)"
+    city: "Brasília"
+    state: "DF"

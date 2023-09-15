@@ -7,7 +7,6 @@ import com.example.meireles.banker.domain.provider.AccountProvider;
 import com.example.meireles.banker.infrastructure.entity.AccountEntity;
 import com.example.meireles.banker.infrastructure.entity.CustomerEntity;
 import com.example.meireles.banker.infrastructure.mapper.AccountMapper;
-import com.example.meireles.banker.infrastructure.mapper.CustomerMapper;
 import com.example.meireles.banker.infrastructure.repository.AccountRepository;
 import com.example.meireles.banker.infrastructure.repository.CustomerRepository;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +32,7 @@ public class AccountAdapter implements AccountProvider {
 
     private final AccountMapper accountMapper;
 
-    private final CustomerMapper customerMapper;
+    private final CustomerAdapter customerAdapter;
 
     /**
      * {@inheritDoc}
@@ -54,10 +53,12 @@ public class AccountAdapter implements AccountProvider {
                         (String.format("The customer have already a %s account", account.getAccountType().name()));
             }
             customer.setId(customerEntity.get().getId());
+            var addressEntity = customerEntity.get().getAddress();
+            customer.getAddress().setId(addressEntity.getId());
         }
 
         log.info("Saving or updating customer. Customer = {}", customer);
-        CustomerEntity createdCustomer = customerRepository.save(customerMapper.toCustomerEntity(customer));
+        Customer createdCustomer = customerAdapter.addCustomer(customer);
         log.info("Customer saved. Customer = {}", createdCustomer);
         customer.setId(createdCustomer.getId());
 

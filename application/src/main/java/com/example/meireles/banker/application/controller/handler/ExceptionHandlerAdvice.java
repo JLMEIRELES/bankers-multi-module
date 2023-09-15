@@ -1,6 +1,7 @@
 package com.example.meireles.banker.application.controller.handler;
 
 import com.example.meireles.banker.domain.exception.AccountExistsException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -19,7 +20,10 @@ import java.util.Map;
  */
 @RestControllerAdvice
 @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+@Slf4j
 public class ExceptionHandlerAdvice {
+
+    private static final String METHOD = "method = {}";
 
     /**
      * Creates a standard object of {@link MethodArgumentNotValidException}. This error occurs
@@ -32,10 +36,13 @@ public class ExceptionHandlerAdvice {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> handleJakartaExceptions(MethodArgumentNotValidException ex){
         Map<String, String> errors = new HashMap<>();
-
         ex.getFieldErrors().
                 forEach(e -> errors.put(e.getField(), e.getDefaultMessage()));
-        return ResponseEntity.unprocessableEntity().body(new ErrorResponse(HttpStatus.UNPROCESSABLE_ENTITY, errors));
+
+        log.error(METHOD, ex.getClass().getSimpleName(), ex);
+        return ResponseEntity.unprocessableEntity().body(
+                new ErrorResponse(HttpStatus.UNPROCESSABLE_ENTITY, errors)
+        );
     }
 
     /**
@@ -48,7 +55,10 @@ public class ExceptionHandlerAdvice {
     @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY)
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<ErrorResponse> handleDataBaseExceptions(DataIntegrityViolationException ex){
-        return ResponseEntity.unprocessableEntity().body(new ErrorResponse(HttpStatus.UNPROCESSABLE_ENTITY, ex.getMessage()));
+        log.error(METHOD, ex.getClass().getSimpleName(), ex);
+        return ResponseEntity.unprocessableEntity().body(
+                new ErrorResponse(HttpStatus.UNPROCESSABLE_ENTITY, ex.getMessage())
+        );
     }
 
     /**
@@ -61,7 +71,10 @@ public class ExceptionHandlerAdvice {
     @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY)
     @ExceptionHandler(AccountExistsException.class)
     public ResponseEntity<ErrorResponse> handleAccountExistsException(AccountExistsException ex){
-        return ResponseEntity.unprocessableEntity().body(new ErrorResponse(HttpStatus.UNPROCESSABLE_ENTITY, ex.getMessage()));
+        log.error(METHOD, ex.getClass().getSimpleName(), ex);
+        return ResponseEntity.unprocessableEntity().body(
+                new ErrorResponse(HttpStatus.UNPROCESSABLE_ENTITY, ex.getMessage())
+        );
     }
 
 }

@@ -10,6 +10,7 @@ import org.mapstruct.Mapping;
 public interface AccountDtoMapper {
 
     @Mapping(source = "customerRequest", target = "customer")
+    @Mapping(source = "customerRequest.addressRequest", target = "customer.address")
     Account toAccount(AccountRequest request);
 
     AccountResponse toAccountResponse(Account account);
