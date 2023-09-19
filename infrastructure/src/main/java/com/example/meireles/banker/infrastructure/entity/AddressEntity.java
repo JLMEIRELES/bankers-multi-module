@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import java.io.Serializable;
 import java.util.Date;
 
 @Entity
@@ -14,7 +15,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "address")
-public class AddressEntity {
+public class AddressEntity implements Serializable {
 
     @Id
     @Column(name = "customer_id")
@@ -45,8 +46,8 @@ public class AddressEntity {
 
     @OneToOne
     @MapsId
-    @JoinColumn(name = "customer_id")
-    private CustomerEntity customer;
+    @JoinColumn(name = "user_id")
+    private UserEntity user;
 
     @UpdateTimestamp
     @Column(name = "updated_at")

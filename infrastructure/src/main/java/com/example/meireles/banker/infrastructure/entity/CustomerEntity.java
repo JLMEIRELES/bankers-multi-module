@@ -1,60 +1,35 @@
 package com.example.meireles.banker.infrastructure.entity;
 
+import com.example.meireles.banker.domain.model.enums.CustomerType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
 @Entity
-@Builder
+@SuperBuilder
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "customer")
-public class CustomerEntity {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @SequenceGenerator(name = "customer_seq", sequenceName = "customer_id_seq", allocationSize = 1)
-    @Column(name = "id")
-    private Long id;
-
-    @NotNull
-    @Column(unique = true, name = "document")
-    private String document;
-
-    @NotNull
-    @Column(name = "name")
-    private String name;
-
-    @NotNull
-    @Column(name = "born_date")
-    private LocalDate bornDate;
-
-    @NotNull
-    @Column(unique = true, name = "email")
-    private String email;
+@PrimaryKeyJoinColumn(name = "user_id")
+public class CustomerEntity extends UserEntity {
 
     @OneToMany(mappedBy = "customer")
     private List<AccountEntity> accounts;
 
-    @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL)
-    @PrimaryKeyJoinColumn
-    private AddressEntity address;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "customer_type")
+    @NotNull
+    private CustomerType customerType;
 
     @UpdateTimestamp
     @Column(name = "updated_at")
     private Date updatedAt;
-
-    @PrePersist
-    @PreUpdate
-    public void setAddressCustomer(){
-        this.address.setCustomer(this);
-    }
 
 }

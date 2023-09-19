@@ -11,8 +11,10 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface CustomerMapper {
 
+    @Mapping(target = "userPassword", source = "password")
     CustomerEntity toCustomerEntity(Customer customer);
 
+    @Mapping(target = "password", source = "userPassword")
     Customer toCustomer(CustomerEntity customerEntity);
 
     @Mapping(source = "bairro", target = "neighborhood")

@@ -2,6 +2,7 @@ package com.example.meireles.banker.infrastructure.adapter;
 
 import com.example.meireles.banker.domain.model.Address;
 import com.example.meireles.banker.domain.model.Customer;
+import com.example.meireles.banker.domain.model.enums.CustomerType;
 import com.example.meireles.banker.domain.provider.CustomerProvider;
 import com.example.meireles.banker.infrastructure.client.ZipCodeClient;
 import com.example.meireles.banker.infrastructure.client.dto.Endereco;
@@ -40,6 +41,9 @@ public class CustomerAdapter implements CustomerProvider {
 
         Address mergedAddress = customerMapper.mergeAddress(customerAddress, address);
         customer.setAddress(mergedAddress);
+        if(customer.getCustomerType() == null){
+            customer.setCustomerType(CustomerType.SILVER);
+        }
 
         log.info("Saving Customer = {} in database", customer);
         CustomerEntity customerEntity = customerRepository.

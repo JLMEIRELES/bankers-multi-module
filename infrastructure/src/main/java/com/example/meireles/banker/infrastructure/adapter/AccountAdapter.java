@@ -24,6 +24,10 @@ import java.util.Random;
 @Slf4j
 public class AccountAdapter implements AccountProvider {
 
+    private static final int ACCOUNT_DIGIT_BOUND = 10;
+
+    private static final int ACCOUNT_NUMBER_SIZE = 5;
+
     private final Random random;
 
     private final AccountRepository accountRepository;
@@ -85,8 +89,8 @@ public class AccountAdapter implements AccountProvider {
      * @param account the account
      */
     private void generateNumberAndDigit(Account account) {
-        account.setDigit(random.nextInt(10));
-        account.setNumber(RandomStringUtils.randomNumeric(5));
+        account.setDigit(random.nextInt(ACCOUNT_DIGIT_BOUND));
+        account.setNumber(RandomStringUtils.randomNumeric(ACCOUNT_NUMBER_SIZE));
         if (accountRepository.findByNumberAndType(account) != null) {
             generateNumberAndDigit(account);
         }

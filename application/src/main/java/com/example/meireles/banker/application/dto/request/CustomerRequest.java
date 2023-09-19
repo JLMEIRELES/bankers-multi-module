@@ -41,6 +41,10 @@ public class CustomerRequest {
             + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$")
     private String email;
 
+    @NotNull
+    @Schema(description = "Customer Password", requiredMode = Schema.RequiredMode.REQUIRED)
+    private String password;
+
     @Valid
     @JsonProperty("address")
     @NotNull
