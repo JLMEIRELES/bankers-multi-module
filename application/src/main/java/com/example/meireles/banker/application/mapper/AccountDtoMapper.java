@@ -9,8 +9,8 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface AccountDtoMapper {
 
-    @Mapping(source = "customerRequest", target = "customer")
-    @Mapping(source = "customerRequest.addressRequest", target = "customer.address")
+    @Mapping(source = "customerRequest", target = "user")
+    @Mapping(source = "customerRequest.addressRequest", target = "user.address")
     Account toAccount(AccountRequest request);
 
     AccountResponse toAccountResponse(Account account);

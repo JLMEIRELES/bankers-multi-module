@@ -3,7 +3,7 @@ package com.example.meireles.banker.application.controller.v1;
 import com.example.meireles.banker.application.dto.request.CustomerRequest;
 import com.example.meireles.banker.application.dto.response.CustomerResponse;
 import com.example.meireles.banker.application.mapper.CustomerDtoMapper;
-import com.example.meireles.banker.domain.service.CustomerService;
+import com.example.meireles.banker.domain.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -32,7 +32,7 @@ public class CustomerController {
 
     private final CustomerDtoMapper customerDtoMapper;
 
-    private final CustomerService customerService;
+    private final UserService userService;
 
     /**
      * Creates a new customer
@@ -43,7 +43,7 @@ public class CustomerController {
     @PostMapping
     @Operation(summary = "Create a new customer", description = "Create a juridic or physical person")
     public ResponseEntity<CustomerResponse> addCustomer(@Valid @RequestBody CustomerRequest customerRequest) {
-        var customer = customerService.addCustomer(customerDtoMapper.toCustomer(customerRequest));
+        var customer = userService.addCustomer(customerDtoMapper.toCustomer(customerRequest));
         CustomerResponse customerResponse = customerDtoMapper.toCustomerResponse(customer);
         return ResponseEntity.created(URI.create(path + "/" + customerResponse.getId()))
                 .body(customerResponse);

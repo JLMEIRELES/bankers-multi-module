@@ -2,7 +2,7 @@ package com.example.meireles.banker.application.mapper;
 
 import com.example.meireles.banker.application.dto.request.CustomerRequest;
 import com.example.meireles.banker.application.dto.response.CustomerResponse;
-import com.example.meireles.banker.domain.model.Customer;
+import com.example.meireles.banker.domain.model.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -10,8 +10,8 @@ import org.mapstruct.Mapping;
 public interface CustomerDtoMapper {
 
     @Mapping(source = "addressRequest", target = "address")
-    Customer toCustomer(CustomerRequest customerRequest);
+    User toCustomer(CustomerRequest customerRequest);
 
-    CustomerResponse toCustomerResponse(Customer addedCustomer);
+    CustomerResponse toCustomerResponse(User addedUser);
 
 }

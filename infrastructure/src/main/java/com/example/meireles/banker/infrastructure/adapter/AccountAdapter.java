@@ -2,13 +2,15 @@ package com.example.meireles.banker.infrastructure.adapter;
 
 import com.example.meireles.banker.domain.exception.AccountExistsException;
 import com.example.meireles.banker.domain.model.Account;
-import com.example.meireles.banker.domain.model.Customer;
+import com.example.meireles.banker.domain.model.User;
+import com.example.meireles.banker.domain.model.enums.UserType;
 import com.example.meireles.banker.domain.provider.AccountProvider;
+import com.example.meireles.banker.domain.provider.UserProvider;
 import com.example.meireles.banker.infrastructure.entity.AccountEntity;
-import com.example.meireles.banker.infrastructure.entity.CustomerEntity;
+import com.example.meireles.banker.infrastructure.entity.UserEntity;
 import com.example.meireles.banker.infrastructure.mapper.AccountMapper;
 import com.example.meireles.banker.infrastructure.repository.AccountRepository;
-import com.example.meireles.banker.infrastructure.repository.CustomerRepository;
+import com.example.meireles.banker.infrastructure.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -32,39 +34,41 @@ public class AccountAdapter implements AccountProvider {
 
     private final AccountRepository accountRepository;
 
-    private final CustomerRepository customerRepository;
+    private final UserRepository userRepository;
 
     private final AccountMapper accountMapper;
 
-    private final CustomerAdapter customerAdapter;
+    private final UserProvider userProvider;
 
     /**
      * {@inheritDoc}
      */
     @Override
     public Account addAccount(Account account) {
-        Customer customer = account.getCustomer();
+        User user = account.getUser();
         log.info("Verifying if customer with this document already exists");
-        Optional<CustomerEntity> customerEntity = customerRepository.findByDocument(customer.getDocument());
+        Optional<UserEntity> userEntity = userRepository.findByDocument(user.getDocument());
         List<AccountEntity> accounts = new ArrayList<>();
 
-        if (customerEntity.isPresent()) {
-            log.info("customer found. Customer = {}", customerEntity);
-            accounts = customerEntity.get().getAccounts();
+        if (userEntity.isPresent()) {
+            log.info("customer found. Customer = {}", userEntity);
+            accounts = userEntity.get().getAccounts();
             if (accounts.stream().anyMatch(a -> a.getAccountType().equals(account.getAccountType()))) {
                 log.error("Customer have already an {} account", account.getAccountType());
                 throw new AccountExistsException
                         (String.format("The customer have already a %s account", account.getAccountType().name()));
             }
-            customer.setId(customerEntity.get().getId());
-            var addressEntity = customerEntity.get().getAddress();
-            customer.getAddress().setId(addressEntity.getId());
+            user.setId(userEntity.get().getId());
+            var addressEntity = userEntity.get().getAddress();
+            user.getAddress().setId(addressEntity.getId());
+        } else {
+            user.setUserType(UserType.CUSTOMER);
         }
 
-        log.info("Saving or updating customer. Customer = {}", customer);
-        Customer createdCustomer = customerAdapter.addCustomer(customer);
-        log.info("Customer saved. Customer = {}", createdCustomer);
-        customer.setId(createdCustomer.getId());
+        log.info("Saving or updating customer. Customer = {}", user);
+        User createdUser = userProvider.addUser(user);
+        log.info("Customer saved. Customer = {}", createdUser);
+        user.setId(createdUser.getId());
 
         log.info("Verifying if customer has already an account, with another type");
         Optional<AccountEntity> firstAccount = accounts.stream().findFirst();
@@ -77,7 +81,7 @@ public class AccountAdapter implements AccountProvider {
             account.setNumber(firstAccount.get().getNumber());
         }
 
-        account.setCustomer(customer);
+        account.setUser(user);
         log.info("Saving Account = {}", account);
         AccountEntity accountEntity = accountRepository.save(accountMapper.toAccountEntity(account));
         log.info("Account saved. Account = {}", accountEntity);

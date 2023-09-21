@@ -3,30 +3,29 @@ package com.example.meireles.banker.infrastructure.entity;
 import com.example.meireles.banker.infrastructure.entity.enums.UserTypeAuthority;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
+import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 @Entity
 @Getter
+@Setter
 @Table(name="\"user\"")
 @NoArgsConstructor
 @AllArgsConstructor
-@SuperBuilder
-@Inheritance(strategy = InheritanceType.JOINED)
+@Builder
 public class UserEntity implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
 
     @NotNull
     @Column(unique = true, name = "document")
@@ -57,6 +56,19 @@ public class UserEntity implements UserDetails {
     @PrimaryKeyJoinColumn
     private AddressEntity address;
 
+    @OneToMany(mappedBy = "user")
+    private List<AccountEntity> accounts;
+
+
+    @UpdateTimestamp
+    @Column(name = "updated_at")
+    private Date updatedAt;
+
+    @CreationTimestamp
+    @Column(name = "created_at")
+    private Date createdAt;
+
+
     @PrePersist
     @PreUpdate
     public void setAddressCustomer(){
@@ -81,17 +93,17 @@ public class UserEntity implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true;
     }
 
     @Override

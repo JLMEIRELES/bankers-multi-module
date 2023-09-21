@@ -19,14 +19,14 @@ import java.io.IOException;
 import java.util.Objects;
 
 @ExtendWith(MockitoExtension.class)
-class CustomerAPITest extends BaseAPITest {
+class UserAPITest extends BaseAPITest {
 
     @InjectMocks
     private ObjectMapper objectMapper;
 
     private final String jsonPath = "src/test/resources/json/";
 
-    public CustomerAPITest() {
+    public UserAPITest() {
         super(new ObjectMapper().registerModule(new JavaTimeModule()));
     }
 

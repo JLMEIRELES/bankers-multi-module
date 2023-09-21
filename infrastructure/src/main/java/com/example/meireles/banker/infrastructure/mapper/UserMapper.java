@@ -1,21 +1,21 @@
 package com.example.meireles.banker.infrastructure.mapper;
 
 import com.example.meireles.banker.domain.model.Address;
-import com.example.meireles.banker.domain.model.Customer;
+import com.example.meireles.banker.domain.model.User;
 import com.example.meireles.banker.infrastructure.client.dto.Endereco;
 import com.example.meireles.banker.infrastructure.entity.AddressEntity;
-import com.example.meireles.banker.infrastructure.entity.CustomerEntity;
+import com.example.meireles.banker.infrastructure.entity.UserEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
-public interface CustomerMapper {
+public interface UserMapper {
 
     @Mapping(target = "userPassword", source = "password")
-    CustomerEntity toCustomerEntity(Customer customer);
+    UserEntity toUserEntity(User user);
 
     @Mapping(target = "password", source = "userPassword")
-    Customer toCustomer(CustomerEntity customerEntity);
+    User toUser(UserEntity userEntity);
 
     @Mapping(source = "bairro", target = "neighborhood")
     @Mapping(source = "cep", target = "zipCode")

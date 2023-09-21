@@ -1,6 +1,5 @@
 package com.example.meireles.banker.domain.model;
 
-import com.example.meireles.banker.domain.model.enums.CustomerType;
 import com.example.meireles.banker.domain.model.enums.UserType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,15 +12,13 @@ import java.time.LocalDate;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Customer {
+public class User {
     private Long id;
     private String document;
     private String name;
     private LocalDate bornDate;
     private String email;
     private Address address;
-    @Builder.Default
-    private UserType userType = UserType.CUSTOMER;
-    private CustomerType customerType;
     private String password;
+    private UserType userType;
 }

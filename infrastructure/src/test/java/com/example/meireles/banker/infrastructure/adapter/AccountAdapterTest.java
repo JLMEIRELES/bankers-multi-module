@@ -1,12 +1,12 @@
 package com.example.meireles.banker.infrastructure.adapter;
 
 import com.example.meireles.banker.domain.model.Account;
-import com.example.meireles.banker.domain.model.Customer;
+import com.example.meireles.banker.domain.model.User;
 import com.example.meireles.banker.infrastructure.entity.AccountEntity;
 import com.example.meireles.banker.infrastructure.mapper.AccountMapper;
-import com.example.meireles.banker.infrastructure.mapper.CustomerMapper;
+import com.example.meireles.banker.infrastructure.mapper.UserMapper;
 import com.example.meireles.banker.infrastructure.repository.AccountRepository;
-import com.example.meireles.banker.infrastructure.repository.CustomerRepository;
+import com.example.meireles.banker.infrastructure.repository.UserRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -28,19 +28,19 @@ class AccountAdapterTest {
     private AccountAdapter accountAdapter;
 
     @Mock
-    private CustomerAdapter customerAdapter;
+    private UserAdapter userAdapter;
 
     @Mock
     private AccountMapper accountMapper;
 
     @Mock
-    private CustomerMapper customerMapper;
+    private UserMapper userMapper;
 
     @Mock
     private AccountRepository accountRepository;
 
     @Mock
-    private CustomerRepository customerRepository;
+    private UserRepository userRepository;
 
     @Mock
     private Random random;
@@ -54,7 +54,7 @@ class AccountAdapterTest {
         //given
         Account account = mock(Account.class);
         AccountEntity accountEntity = mock(AccountEntity.class);
-        Customer customer = spy(Customer.builder().
+        User user = spy(User.builder().
                 name("customer").
                 email("email@email.com").
                 bornDate(LocalDate.now()).
@@ -63,12 +63,12 @@ class AccountAdapterTest {
                 );
 
         when(random.nextInt(anyInt())).thenReturn(1);
-        when(account.getCustomer()).thenReturn(customer);
-        when(customerRepository.findByDocument(any(String.class))).thenReturn(Optional.empty());
+        when(account.getUser()).thenReturn(user);
+        when(userRepository.findByDocument(any(String.class))).thenReturn(Optional.empty());
         when(accountMapper.toAccountEntity(any(Account.class))).thenReturn(accountEntity);
         when(accountRepository.save(any(AccountEntity.class))).thenReturn(accountEntity);
         when(accountMapper.toAccount(any(AccountEntity.class))).thenReturn(account);
-        when(customerAdapter.addCustomer(any(Customer.class))).thenReturn(customer);
+        when(userAdapter.addUser(any(User.class))).thenReturn(user);
 
         //when
         Account createdAccount = accountAdapter.addAccount(account);
@@ -89,7 +89,7 @@ class AccountAdapterTest {
         //given
         Account account = mock(Account.class);
         AccountEntity accountEntity = mock(AccountEntity.class);
-        Customer customer = spy(Customer.builder().
+        User user = spy(User.builder().
                 name("customer").
                 email("email@email.com").
                 bornDate(LocalDate.now()).
@@ -98,10 +98,10 @@ class AccountAdapterTest {
         );
 
         when(random.nextInt(anyInt())).thenReturn(1);
-        when(account.getCustomer()).thenReturn(customer);
-        when(customerRepository.findByDocument(any(String.class))).thenReturn(Optional.empty());
+        when(account.getUser()).thenReturn(user);
+        when(userRepository.findByDocument(any(String.class))).thenReturn(Optional.empty());
         when(accountMapper.toAccountEntity(any(Account.class))).thenReturn(accountEntity);
-        when(customerAdapter.addCustomer(any(Customer.class))).thenReturn(customer);
+        when(userAdapter.addUser(any(User.class))).thenReturn(user);
         doThrow(RuntimeException.class).when(accountRepository).save(accountEntity);
 
         //when and then

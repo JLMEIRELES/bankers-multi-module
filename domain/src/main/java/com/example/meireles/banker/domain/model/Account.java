@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 @Builder
 public class Account {
     private AccountType accountType;
-    private Customer customer;
+    private User user;
     private String number;
     private Integer digit;
     @Builder.Default

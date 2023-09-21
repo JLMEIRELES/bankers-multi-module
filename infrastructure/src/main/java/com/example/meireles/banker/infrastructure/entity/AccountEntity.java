@@ -34,8 +34,8 @@ public class AccountEntity implements Serializable {
     private Integer digit;
 
     @ManyToOne
-    @JoinColumn(name = "customer_id")
-    private CustomerEntity customer;
+    @JoinColumn(name = "user_id")
+    private UserEntity user;
 
     @Enumerated(EnumType.STRING)
     @NotNull
