@@ -6,7 +6,6 @@ import java.util.Arrays;
 
 public enum UserTypeAuthority implements GrantedAuthority {
 
-
     ADM,
     CUSTOMER,
     NOT_MAPPED;

@@ -11,9 +11,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Schema(description = "An object of address request")
 public class AddressRequest {
 
-    @NotNull
+    @NotNull(message = "Is necessary to inform the address zip code")
     @Schema(description = "Address zipCode", requiredMode = Schema.RequiredMode.REQUIRED)
     private String zipCode;
 

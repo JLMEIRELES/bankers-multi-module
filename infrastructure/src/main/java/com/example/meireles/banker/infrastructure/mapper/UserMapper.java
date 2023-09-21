@@ -2,9 +2,11 @@ package com.example.meireles.banker.infrastructure.mapper;
 
 import com.example.meireles.banker.domain.model.Address;
 import com.example.meireles.banker.domain.model.User;
+import com.example.meireles.banker.domain.model.enums.UserType;
 import com.example.meireles.banker.infrastructure.client.dto.Endereco;
 import com.example.meireles.banker.infrastructure.entity.AddressEntity;
 import com.example.meireles.banker.infrastructure.entity.UserEntity;
+import com.example.meireles.banker.infrastructure.entity.enums.UserTypeAuthority;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -26,6 +28,8 @@ public interface UserMapper {
     Address toAddress(Endereco endereco);
 
     Address toAddress(AddressEntity addressEntity);
+
+    UserType toUserType(UserTypeAuthority userType);
 
     default Address mergeAddress(Address targetAddress, Address sourceAddress) {
         return Address.builder().

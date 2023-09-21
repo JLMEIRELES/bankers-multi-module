@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Schema(description = "An object of account request")
 public class AccountRequest {
 
     @NotNull(message = "Is necessary to inform the account type")

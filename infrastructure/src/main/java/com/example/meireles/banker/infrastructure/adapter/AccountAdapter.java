@@ -9,6 +9,7 @@ import com.example.meireles.banker.domain.provider.UserProvider;
 import com.example.meireles.banker.infrastructure.entity.AccountEntity;
 import com.example.meireles.banker.infrastructure.entity.UserEntity;
 import com.example.meireles.banker.infrastructure.mapper.AccountMapper;
+import com.example.meireles.banker.infrastructure.mapper.UserMapper;
 import com.example.meireles.banker.infrastructure.repository.AccountRepository;
 import com.example.meireles.banker.infrastructure.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -40,6 +41,8 @@ public class AccountAdapter implements AccountProvider {
 
     private final UserProvider userProvider;
 
+    private final UserMapper userMapper;
+
     /**
      * {@inheritDoc}
      */
@@ -47,19 +50,21 @@ public class AccountAdapter implements AccountProvider {
     public Account addAccount(Account account) {
         User user = account.getUser();
         log.info("Verifying if customer with this document already exists");
-        Optional<UserEntity> userEntity = userRepository.findByDocument(user.getDocument());
+        Optional<UserEntity> userEntityOptional = userRepository.findByDocument(user.getDocument());
         List<AccountEntity> accounts = new ArrayList<>();
 
-        if (userEntity.isPresent()) {
-            log.info("customer found. Customer = {}", userEntity);
-            accounts = userEntity.get().getAccounts();
+        if (userEntityOptional.isPresent()) {
+            log.info("customer found. Customer = {}", userEntityOptional);
+            accounts = userEntityOptional.get().getAccounts();
             if (accounts.stream().anyMatch(a -> a.getAccountType().equals(account.getAccountType()))) {
                 log.error("Customer have already an {} account", account.getAccountType());
                 throw new AccountExistsException
                         (String.format("The customer have already a %s account", account.getAccountType().name()));
             }
-            user.setId(userEntity.get().getId());
-            var addressEntity = userEntity.get().getAddress();
+            UserEntity userEntity = userEntityOptional.get();
+            user.setUserType(userMapper.toUserType(userEntity.getUserType()));
+            user.setId(userEntityOptional.get().getId());
+            var addressEntity = userEntity.getAddress();
             user.getAddress().setId(addressEntity.getId());
         } else {
             user.setUserType(UserType.CUSTOMER);

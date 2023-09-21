@@ -3,6 +3,7 @@ package com.example.meireles.banker.infrastructure.adapter;
 import com.example.meireles.banker.domain.model.AuthenticationModel;
 import com.example.meireles.banker.domain.provider.AuthenticationProvider;
 import com.example.meireles.banker.infrastructure.config.authentication.JWTService;
+import com.example.meireles.banker.infrastructure.entity.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -12,7 +13,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class AuthAdapter implements AuthenticationProvider {
-
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -25,11 +25,10 @@ public class AuthAdapter implements AuthenticationProvider {
         Authentication authentication = authenticationManager.
                 authenticate(new UsernamePasswordAuthenticationToken(authenticationModel.getLogin(), authenticationModel.getPassword()));
         if (authentication.isAuthenticated()) {
-            return jwtService.generateToken(authenticationModel.getLogin());
+            return jwtService.generateToken((UserEntity) authentication.getPrincipal());
         } else {
             throw new UsernameNotFoundException("invalid user request !");
         }
     }
-
 
 }

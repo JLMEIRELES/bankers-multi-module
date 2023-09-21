@@ -1,5 +1,6 @@
 package com.example.meireles.banker.infrastructure.config.authentication;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,18 +21,15 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
+
+    private final JwtAuthFilter jwtAuthFilter;
 
     @Bean
     public UserDetailsService authenticationService() {
         return new AuthenticationAdapter();
     }
-
-    @Bean JwtAuthFilter jwtAuthFilter() {
-        return new JwtAuthFilter();
-    }
-
-
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -43,7 +41,7 @@ public class SecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable);
         http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         http.authenticationProvider(authenticationProvider());
-        http.addFilterBefore(jwtAuthFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
@@ -64,6 +62,5 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
-
 
 }

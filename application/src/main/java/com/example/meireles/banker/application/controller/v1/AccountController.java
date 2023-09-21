@@ -3,6 +3,7 @@ package com.example.meireles.banker.application.controller.v1;
 import com.example.meireles.banker.application.dto.request.AccountRequest;
 import com.example.meireles.banker.application.dto.response.AccountResponse;
 import com.example.meireles.banker.application.mapper.AccountDtoMapper;
+import com.example.meireles.banker.application.utils.validations.annotation.auth.AdmEndpoint;
 import com.example.meireles.banker.domain.model.Account;
 import com.example.meireles.banker.domain.service.AccountService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -42,6 +43,7 @@ public class AccountController {
      * @return an instance of {@link AccountResponse} content the number and digit of the created account
      */
     @PostMapping
+    @AdmEndpoint
     @Operation(summary = "Create a new account", description = "Create a new account and update or create it's costumer")
     public ResponseEntity<AccountResponse> addAccount(@Valid @RequestBody AccountRequest accountRequest){
         Account account = accountService.addAccount(accountDtoMapper.toAccount(accountRequest));

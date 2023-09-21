@@ -1,5 +1,6 @@
 package com.example.meireles.banker.infrastructure.config.authentication;
 
+import com.example.meireles.banker.infrastructure.entity.UserEntity;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -19,10 +20,11 @@ public class JWTService {
 
     public static final String SECRET = "5367566B59703373367639792F423F4528482B4D6251655468576D5A71347437";
 
-
-    public String generateToken(String userName) {
+    public String generateToken(UserEntity user) {
         Map<String, Object> claims = new HashMap<>();
-        return createToken(claims, userName);
+        claims.put("role", user.getUserType());
+        claims.put("email", user.getEmail());
+        return createToken(claims, user.getUsername());
     }
 
     private String createToken(Map<String, Object> claims, String userName) {

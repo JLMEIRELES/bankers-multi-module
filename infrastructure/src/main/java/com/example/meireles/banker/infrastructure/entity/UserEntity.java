@@ -59,7 +59,6 @@ public class UserEntity implements UserDetails {
     @OneToMany(mappedBy = "user")
     private List<AccountEntity> accounts;
 
-
     @UpdateTimestamp
     @Column(name = "updated_at")
     private Date updatedAt;
@@ -68,13 +67,11 @@ public class UserEntity implements UserDetails {
     @Column(name = "created_at")
     private Date createdAt;
 
-
     @PrePersist
     @PreUpdate
     public void setAddressCustomer(){
         this.address.setUser(this);
     }
-
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

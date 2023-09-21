@@ -3,6 +3,7 @@ package com.example.meireles.banker.application.controller.v1;
 import com.example.meireles.banker.application.dto.request.CustomerRequest;
 import com.example.meireles.banker.application.dto.response.CustomerResponse;
 import com.example.meireles.banker.application.mapper.CustomerDtoMapper;
+import com.example.meireles.banker.application.utils.validations.annotation.auth.AdmEndpoint;
 import com.example.meireles.banker.domain.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -41,6 +42,7 @@ public class CustomerController {
      * @return an instance of {@link CustomerResponse} content the id of the created customer
      */
     @PostMapping
+    @AdmEndpoint
     @Operation(summary = "Create a new customer", description = "Create a juridic or physical person")
     public ResponseEntity<CustomerResponse> addCustomer(@Valid @RequestBody CustomerRequest customerRequest) {
         var customer = userService.addCustomer(customerDtoMapper.toCustomer(customerRequest));

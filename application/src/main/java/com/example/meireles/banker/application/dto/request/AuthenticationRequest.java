@@ -13,8 +13,11 @@ import lombok.NoArgsConstructor;
 @Data
 @Schema(description = "An object of login request")
 public class AuthenticationRequest {
-    @NotNull
+
+    @NotNull(message = "Is necessary to inform the login")
     private String login;
-    @NotNull
+
+    @NotNull(message = "Is necessary to inform the password")
     private String password;
+
 }

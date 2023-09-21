@@ -1,7 +1,8 @@
 package com.example.meireles.banker.application.controller.v1;
 
 import com.example.meireles.banker.application.dto.request.AuthenticationRequest;
-import com.example.meireles.banker.application.mapper.AuthenticationMapper;
+import com.example.meireles.banker.application.dto.response.AuthenticationResponse;
+import com.example.meireles.banker.application.mapper.AuthenticationDtoMapper;
 import com.example.meireles.banker.domain.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -18,13 +19,13 @@ public class UserController {
 
     private final AuthenticationService authenticationService;
 
-    private final AuthenticationMapper authenticationMapper;
+    private final AuthenticationDtoMapper authenticationDtoMapper;
 
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody AuthenticationRequest authRequest){
-        String token = authenticationService.authenticate(authenticationMapper.toUser(authRequest));
-        return ResponseEntity.ok(token);
+    public ResponseEntity<AuthenticationResponse> login(@RequestBody AuthenticationRequest authRequest){
+        String token = authenticationService.authenticate(authenticationDtoMapper.toUser(authRequest));
+        return ResponseEntity.ok(authenticationDtoMapper.toAuthenticationResponse(token));
     }
 
 }
