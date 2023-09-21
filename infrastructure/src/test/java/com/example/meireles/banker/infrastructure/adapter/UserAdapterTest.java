@@ -13,6 +13,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -32,6 +33,9 @@ class UserAdapterTest {
     @Mock
     private ZipCodeClient zipCodeClient;
 
+    @Mock
+    private BCryptPasswordEncoder passwordEncoder;
+
     /**
      * Checks if Customer adapter are correctly saving Customer, calling {@link UserRepository#save(Object)}
      */
@@ -39,7 +43,10 @@ class UserAdapterTest {
     void shouldSaveCustomer(){
         //given
         User user = mock(User.class);
-        UserEntity userEntity = mock(UserEntity.class);
+        UserEntity userEntity = spy(UserEntity.builder().
+                userPassword("password").
+                build()
+        );
         Address address = spy(Address.builder().
                 zipCode("zipCode").
                 build()
@@ -53,6 +60,7 @@ class UserAdapterTest {
         when(userMapper.toUser(any(UserEntity.class))).thenReturn(user);
         when(zipCodeClient.getAddress(any(String.class))).thenReturn(endereco);
         when(userMapper.toAddress(endereco)).thenReturn(address);
+        when(passwordEncoder.encode(anyString())).thenReturn("encoded password");
 
         //when
         User createdUser = userAdapter.addUser(user);
